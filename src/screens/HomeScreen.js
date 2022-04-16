@@ -17,14 +17,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Icon from '@mui/material/Icon';
-
-
-import { useLocation, useNavigate} from "react-router-dom";
-
 import {navigationItems} from "../config";
-
-import ReactDOM from "react-dom";
-import { BrowserRouter , Route, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 
 
 const drawerWidth = 240;
@@ -47,18 +41,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
   
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({

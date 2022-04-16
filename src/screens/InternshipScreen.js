@@ -1,18 +1,15 @@
 import React from "react"
 import { Button } from "@mui/material";
-import { Box } from "@mui/system";
-import { Container, Paper, Grid } from "@mui/material";
-import { Link, BrowserRouter } from "react-router-dom";
-import { IconButton } from '@mui/material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Paper, Grid } from "@mui/material";
+import { Link} from "react-router-dom";
 
-const PracticeScreen = () => {
+const InternshipScreen = () => {
 
     return (
 
-        <Grid container  lg={11} sx={{mt:5, mx:"auto"}}>
+        <Grid container  maxWidth="lg" sx={{mt:5, mx:"auto"}}>
             
-            <Grid item xs={12} md={12} lg={12}>
+            <Grid item xs={11} md={11} lg={12} sx={{mx:"auto"}}>
                 <Paper
                   sx={{
                     p: 2,
@@ -25,7 +22,7 @@ const PracticeScreen = () => {
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
-              <Grid item xs={12} md={6} lg={5} sx={{p:3, mx:"auto"}}>
+              <Grid item xs={12} md={6} lg={4} sx={{p:3, mx:"auto"}}>
                         <Link  style={{ textDecoration: 'none'}}to={"/practicas/nueva"}>
                                     <Button variant="contained" color='primary' size='large' fullWidth>Nueva Practica</Button>
                         </Link>    
@@ -35,8 +32,5 @@ const PracticeScreen = () => {
 
 }
 
-/* Button variant="contained" color='primary' size='large' >Nueva Practica</Button> */
-
-
-export default PracticeScreen;
+export default InternshipScreen;
 

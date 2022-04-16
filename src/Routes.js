@@ -1,9 +1,8 @@
 import React from "react";
 import {Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
 import InnerContent from "./components/InnerContent";
-import PracticeScreen from "./screens/PracticeScreen";
-import PracticeForm from "./components/PracticeForm";
-
+import InternshipForm from "./components/InternshipForm";
+import InternshipScreen from "./screens/InternshipScreen"
 
 const MainRoutes = () => (
 
@@ -13,8 +12,8 @@ const MainRoutes = () => (
 			
 			<Route path="/" element={<InnerContent/>}>
 				<Route path="/" element={<Navigate replace to="practicas" />} /> 
-				<Route  path="practicas" element={<PracticeScreen />} />
-				<Route path="practicas/nueva" element={<PracticeForm />} />	
+				<Route  path="practicas" element={<InternshipScreen />} />
+				<Route path="practicas/nueva" element={<InternshipForm  />} />	
 			</Route>
 			
 		</Routes>
