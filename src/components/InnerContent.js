@@ -2,10 +2,8 @@ import {Outlet} from 'react-router-dom';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 
-
 const InnerContent=() =>{
   return (
-
     <Box
     component="main"
     sx={{
@@ -18,18 +16,14 @@ const InnerContent=() =>{
       width: '100vh',
       overflow: 'auto',
     }}
-  >
-    <Toolbar />
-   
+    >
+      <Toolbar />
       
-        <Outlet/>
-        
-   
-  </Box>
+      <Outlet/>
+
+    </Box>
   
-  );
-  
-  
+  );   
 }
 
 export default InnerContent;
