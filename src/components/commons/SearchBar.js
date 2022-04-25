@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import Input from '@mui/material/Input';
 import Box from '@mui/material/Box';
@@ -17,4 +17,4 @@ const SearchBar = ({ placeholder, onChange, searchBarWidth }) => {
     )
 }
 
-export default SearchBar
+export default SearchBar;
