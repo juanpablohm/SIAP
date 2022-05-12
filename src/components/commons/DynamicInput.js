@@ -12,6 +12,10 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
     const handleChangeInputs = (id, name, newValue) => {
 		const index = values.findIndex((m) => m.id === id)
 
+        if( type === "pay" && name === "desc"){
+            name = "amount";
+        }
+
 		let _values = [...values] 
 		_values[index][name] = newValue
 		setFunction(_values)
@@ -90,24 +94,26 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
           <Paper sx={{p:3}}>  
                 <Typography sx={{textAlign:'left', mb:2, fontSize: 15 }} color="text.secondary" >
                                 {title}
-                </Typography>        
-            {values.map((value) => (                     
+                </Typography>  
+            {values instanceof Array? (    
+                values.map((value) => (                     
+                    
+                    <Grid container sx={{mx:'auto'}} spacing={3} key={value.id}>
                 
-                <Grid container sx={{mx:'auto'}} spacing={3} key={value.id}>
-             
-                    {getType(type, value)}
+                        {getType(type, value)}
 
-                    <Grid item  lg={2}>    
-                        <IconButton size="small" onClick={addMemberRow} ><AddRoundedIcon fontSize="small"/></IconButton>
+                        <Grid item  lg={2}>    
+                            <IconButton size="small" onClick={addMemberRow} ><AddRoundedIcon fontSize="small"/></IconButton>
 
-                        {values.length > 1 && (            
-                            <IconButton size="small" onClick={() => removeMemberRow(value.id)} >
-                                <CloseRoundedIcon fontSize="small"/>
-                            </IconButton>
-                        )} 
-                    </Grid>
-                </Grid>                  
-            ))}             
+                            {values.length > 1 && (            
+                                <IconButton size="small" onClick={() => removeMemberRow(value.id)} >
+                                    <CloseRoundedIcon fontSize="small"/>
+                                </IconButton>
+                            )} 
+                        </Grid>
+                    </Grid>                  
+                ))
+            ) : (null)}             
         </Paper>
     );
 };

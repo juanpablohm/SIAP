@@ -1,9 +1,7 @@
-export var Officer = {
-
-    name: '',
+export var Supervisor = {
+    firstName: '',
     lastName: '',
     cellphone: '',
     email: '',
     position: ''
- 
  };

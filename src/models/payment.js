@@ -1,10 +1,11 @@
 import {v4 as uuidv4} from "uuid";
 
 export var Payment = {
-    cdp : '',
+    cdpNumber : '',
     total: '',
-    pays: [{
-      desc : '',
+    salary: '',
+    fees: [{
+      amount : '',
       id: uuidv4(),
       date: null
     }]

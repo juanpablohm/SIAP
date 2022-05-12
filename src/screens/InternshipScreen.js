@@ -1,7 +1,7 @@
-import React from "react"
-import { Button, ButtonGroup, IconButton } from "@mui/material";
+import React, { useEffect, useState } from "react"
+import { Alert, Button, ButtonGroup, CircularProgress, IconButton } from "@mui/material";
 import { Grid, Box} from "@mui/material";
-import { Link} from "react-router-dom";
+import { Link, Navigate, useNavigate} from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
 import SearchBar from "../components/commons/SearchBar";
 import { cardHeaderStyles } from './styles/cardHeaderStyles';
@@ -16,6 +16,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Chip from '@mui/material/Chip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
+import { getInternships } from "../api/internship/InternshipServices";
 
 const Internships = [{
     id : '123',
@@ -26,20 +28,86 @@ const Internships = [{
     initDate: '12/08/22',
     endDate: '11/23/23',
     state: 'Aprobada'
+}, {
+  id : '1234',
+  student : 'Juan Pablo Hernandez',
+  professor: 'Carlos Alberto Ruiz',
+  company: 'Universidad de Caldas',
+  officer: 'Pedro Perez',
+  initDate: '12/08/22',
+  endDate: '11/23/23',
+  state: 'Aprobada'
 }];
 
-const getIconState = (state) =>{
+const getIconState = (status) =>{
 
-   return(<Chip label={state} color="success"/>)
+  let state = { label:"Creada" , color:'error'}
+
+   switch (status) {
+     case 2:
+       state.label = "A. Docente";
+       state.color = "info";
+       break;
+
+     case 3:
+       state.label = "A. Comite";
+       state.color = "warning";
+       break;
+   
+     default:
+       break;
+   }
+
+   return(<Chip sx={{width:'100%'}}  label={state.label} color={state.color}/>)
 }
-
- 
 
 const InternshipScreen = () => {
 
-    const handleChange = (value) => {
-      console.log(value);
+    let navigate = useNavigate();
+
+    const [internships, setInternships] = useState(null);
+    const [error, setError] = useState(false);
+    const [search, setSearch] = useState(internships);
+
+    const getInternshipsData = async () => { 
+      try {
+        let internshipResponse = await getInternships(); 
+        setInternships(internshipResponse);   
+        setSearch(internshipResponse);
+      }catch(e){
+        setError(true);
+      }
     };
+
+    useEffect(() => {
+      getInternshipsData();
+    }, []);
+
+    const handleSearch = (value) => {
+      
+      const lowercasedValue = value.toLowerCase().trim();
+
+      console.log(search);
+
+      if(lowercasedValue === '') setInternships(search);
+      else {
+        const filteredData = internships.filter((item) => {
+            return Object.keys(item).some((key) => 
+                  item[key]?.toString().toLowerCase().trim().includes(lowercasedValue)
+            );
+        });
+        if(filteredData.length >= 1)
+          setInternships(filteredData);
+      }
+    };
+
+    const handledEdit = (id) => {
+        navigate('/practicas/editar/' + id);
+    }
+
+    const handledRemove = (id) => {
+       console.log("borrar" + id)
+    }
 
     const noInterships = ()=>{
         return(
@@ -48,6 +116,29 @@ const InternshipScreen = () => {
            sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
             No se ha encontrado ninguna practica
         </Typography>)
+    }
+
+    if(error){
+      return ( 
+        <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={4} lg={4}> 
+               <Typography 
+                  align="center"
+                  sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
+                    <Alert variant="filled" severity="error">Ocurrio un error, por favor intentelo más tarde!</Alert>
+               </Typography>                
+        </Grid>
+      );
+    }
+    else if(internships == null) {
+      return ( 
+        <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={9} lg={9}> 
+               <Typography 
+                  align="center"
+                  sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
+                    <CircularProgress/>
+               </Typography>                
+        </Grid>
+      );
     }
 
     return (
@@ -59,20 +150,20 @@ const InternshipScreen = () => {
                   <Grid container sx={cardHeaderStyles.wrapper}>
                         <Grid item  xs={6} lg={9} md={9}>
                           <SearchBar 
-                              placeholder="Buscar por cedula estudiante"
-                              onChange={(event) => handleChange(event.target.value)}
+                              placeholder="Código, cedula, nombre del estudiante"
+                              onChange={(event) => handleSearch(event.target.value)}
                               searchBarWidth='300px'
                           />
                         </Grid>
                         <Grid item xs={4} lg={3} md={3}>
-                          <Link  style={{ textDecoration: 'none'}}to={"/practicas/nueva"}>
+                          <Link  style={{ textDecoration: 'none'}} to={"/practicas/convenio"} >
                             <Button startIcon={<AddRoundedIcon  />} variant="contained" color='primary' size='medium' fullWidth>Nueva Practica</Button>
                           </Link> 
                         </Grid> 
                   </Grid>               
                   <CardContent>
             
-                  {Internships.length < 1 ? ( 
+                  {internships.length < 1 ? ( 
                         noInterships()
                   ) : (
                       <TableContainer component={Paper}>
@@ -90,24 +181,25 @@ const InternshipScreen = () => {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {Internships.map((internship) => (
+                            {internships.map((internship) => (
                                 <TableRow
                                   key={internship.id}
                                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center" component="th" scope="row">
-                                      {getIconState(internship.state)}
+                                      {getIconState(internship.status)}
                                     </TableCell>
-                                    <TableCell align="center">{internship.student}</TableCell>
-                                    <TableCell align="center">{internship.professor}</TableCell>
-                                    <TableCell align="center">{internship.company}</TableCell>
-                                    <TableCell align="center">{internship.officer}</TableCell>
-                                    <TableCell align="center">{internship.initDate}</TableCell>
-                                    <TableCell align="center">{internship.endDate}</TableCell>
+                                    <TableCell align="center">{internship.studentName}</TableCell>
+                                    <TableCell align="center">{internship.professorName}</TableCell>
+                                    <TableCell align="center">{internship.companyName}</TableCell>
+                                    <TableCell align="center">{internship.supervisorName}</TableCell>
+                                    <TableCell align="center">{internship.startdate.substring(0, internship.startdate.indexOf("T"))}</TableCell>
+                                    <TableCell align="center">{internship.endDate.substring(0, internship.endDate.indexOf("T"))}</TableCell>
                                     <TableCell align="center">
                                       <ButtonGroup disableElevation variant="contained" aria-label="outlined primary button group">
-                                          <IconButton aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
-                                          <IconButton aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
+                                          <IconButton onClick={() => {handledEdit(internship.id)}}  aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
+                                          <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
+                                          <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <PlagiarismRoundedIcon /> </IconButton>
                                       </ButtonGroup>
                                     </TableCell>
                                 </TableRow>
@@ -129,8 +221,6 @@ const InternshipScreen = () => {
     );
 
 }
-
-
 
 export default InternshipScreen;
 

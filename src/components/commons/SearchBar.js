@@ -10,7 +10,7 @@ const SearchBar = ({ placeholder, onChange, searchBarWidth }) => {
             <Input
                 placeholder={placeholder}
                 onChange={onChange}
-                sx={{width: searchBarWidth, color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.1rem'}}
+                sx={{width: searchBarWidth, color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.9rem'}}
                 disableUnderline
             />
         </Box>

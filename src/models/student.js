@@ -1,6 +1,6 @@
 
 export var Student = {
-    name : '',
+    firstName : '',
     lastName: '',
     documentId: '',
     dateBirth: '2014-08-18T21:11:54',
@@ -10,4 +10,14 @@ export var Student = {
     university: '',
     faculty: '',
     program: '',
+    code: '',
+};
+
+export function enumEPS(eps){
+    switch (eps) {
+        case 1:
+            return "Sanitas";
+        default:
+            return "Sin eps";
+    }
 };

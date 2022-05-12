@@ -1,6 +1,6 @@
-import React ,  { useState, useEffect } from 'react';
+import React ,  { useState } from 'react';
 import { Box } from "@mui/system";
-import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon, CircularProgress, Alert} from "@mui/material";
+import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Accordion, AccordionSummary, AccordionDetails } from './styles/IntershipFormStyles';
@@ -26,20 +26,6 @@ import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
-import { getStudentById } from '../api/student/StudentService';
-import { enumEPS } from '../models/student';
-import { getAgreementById } from '../api/agreement/AgreementService';
-
-var Agreement = {
-  entity: 'Universidad de Caldas',
-  nit: '1234567-9',
-  type:'Marco',
-  prorogation: 'Automatico',
-  startDate: '11/03/22',
-  endDate: '11/03/25',
-  status: 'Activo',
-  consecutive: '303'
-};
 
 var Student = {
   firstName : 'Juan Pablo',
@@ -55,91 +41,32 @@ var Student = {
   code: '1701711246',
 };
 
+var Agreement = {
+  entity: 'Universidad de Caldas',
+  nit: '1234567-9',
+  type:'Marco',
+  prorogation: 'Automatico',
+  startDate: '11/03/22',
+  endDate: '11/03/25',
+  status: 'Activo',
+  consecutive: '303'
+};
 
-const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, agreementId}) =>{
+const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreement}) =>{
 
   const [data, setData] = useState(InternshipFormModel);
-  const [student, setStudent] = useState(null);
-  const [agreement, setAgreement] = useState(null);
-  const [error, setError] = useState(false);
 
-
-  const getStudent = async () => { 
-    try {
-      let studentResponse = await getStudentById(studentId); 
-      setStudent(studentResponse);    
-    }catch(e){
-       setError(true);
-    }
-  };
-
-  const getAgreement = async () => { 
-    try {
-
-      let agreementResponse = await getAgreementById(agreementId); 
-      if(agreementResponse != null){
-        agreementResponse.startDate = agreementResponse.startDate.substring(0, agreementResponse.startDate.indexOf("T"));
-        agreementResponse.endDate = agreementResponse.endDate.substring(0, agreementResponse.endDate.indexOf("T"));
-        agreementResponse.registeredNumber = agreementResponse.registeredNumber.substring(agreementResponse.registeredNumber.indexOf("-") + 1, );
-      }   
-      setAgreement(agreementResponse);
-    
-    }catch(e){
-       setError(true);
-    }
-  }
-
-  useEffect(() => {
-    getStudent();
-    getAgreement();
-  }, [])
-  
+  student = Student;
+  agreement = Agreement;
 
   const handledSumit = () =>{ 
-
-    let generalGoal = "";
-    let specificGoal = "";
-   
-    data.internship.generalGoal.map((obj) => (generalGoal += obj.desc + ";" ));
-    data.internship.specificGoal.map((obj) => (specificGoal += obj.desc + ";" ));
-   
-    data.internship.generalGoal = generalGoal;
-    data.internship.specificGoal = specificGoal;
-
-    data.internship.agreementId = agreementId; 
-    data.internship.studentId = studentId;
-    onSumitFunc(data);
-  }
-
-  
-  if(error){
-    return ( 
-      <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={4} lg={4}> 
-             <Typography 
-                align="center"
-                sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
-                  <Alert variant="filled" severity="error">Ocurrio un error, por favor intentelo más tarde!</Alert>
-             </Typography>                
-      </Grid>
-    );
-  }
-  else if(student == null || agreement == null) {
-    return ( 
-      <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={9} lg={9}> 
-             <Typography 
-                align="center"
-                sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
-                  <CircularProgress/>
-             </Typography>                
-      </Grid>
-    );
+        onSumitFunc(data);
   }
  
-
-  return (
+    return (
             <Grid item sx={{mt:1, mx:"auto"}} xs={10} md={9} lg={9}>
             <Card  elevation={15} >  
-            
+
               <Typography  sx={{color:'#111111', mb:2, mt:3, fontWeight: 600}} component="h5" variant="h5" align="center">
                     Solicitud de practica
               </Typography>
@@ -167,7 +94,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <BadgeRoundedIcon  fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText secondary={student.cedula}/>
+                                              <ListItemText secondary={student.documentId}/>
                                             </ListItem>
                                           </Grid>
                                           <Grid item xs={12} lg={6}>
@@ -175,7 +102,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <MedicalServicesRoundedIcon  fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText secondary={enumEPS(student.eps)}/>
+                                              <ListItemText secondary={student.eps}/>
                                             </ListItem>                           
                                           </Grid>
                                           <Grid item xs={12} lg={12}>
@@ -211,8 +138,8 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                           <VisibilityRoundedIcon />
                                         </IconButton>
                                       }
-                                      title={agreement.companyName}
-                                      subheader={agreement.companyNit + " " + agreement.status}
+                                      title={agreement.entity}
+                                      subheader={agreement.nit + " " + agreement.status}
                                     />
                                     <Divider />                          
                                   
@@ -220,11 +147,11 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                       <List sx={{pr:3, pl:3, pt:2.504 , pb:3}} >
                                         <Grid container  >
                                           <Grid item xs={12} lg={8}>
-                                            <ListItem sx={{pr:0}}  >
+                                            <ListItem  >
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <DateRangeRoundedIcon  fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText secondary={agreement.startDate + "/" + agreement.endDate}/>
+                                              <ListItemText secondary={agreement.startDate + " - " + agreement.endDate}/>
                                             </ListItem>
                                           </Grid>
                                           <Grid item xs={12} lg={4}>
@@ -232,7 +159,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <NumbersRoundedIcon  fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText secondary={agreement.registeredNumber}/>
+                                              <ListItemText secondary={agreement.consecutive}/>
                                             </ListItem>
                                           </Grid>
                                           <Grid item xs={12} lg={6}>
@@ -240,7 +167,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <ChangeCircleRoundedIcon  fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText secondary={agreement.extension} />
+                                              <ListItemText secondary={agreement.prorogation} />
                                             </ListItem>
                                           </Grid>
                                           <Grid item xs={12} lg={6} >
@@ -382,17 +309,6 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                    </Typography>          
                               </Grid>
 
-                              {data.internship.isPaid ? (
-                                <Grid item xs={12} md={12} lg={12} >
-                                    <TextField 
-                                      name="salary" 
-                                      label="Salario mensual"
-                                      value={data.payment.salary}
-                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, salary: event.target.value }})}  
-                                      fullWidth/>
-                                </Grid>
-                              ):(data.payment.salary=null)}
-                              
                               <Grid item xs={12} md={12} lg={12} >                             
                                   <Paper sx={{p:3}}>                                
                                     <Grid container spacing={4}>
@@ -487,15 +403,69 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                         </AccordionDetails>
                       </Accordion> 
 
+                      <Accordion >
+                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                          <Typography>Información financiera</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={4}>              
+                                <Grid item xs={12} md={12} lg={6} >
+                                    <TextField 
+                                      name="cdp" 
+                                      label="Numero de CDP"
+                                      value={data.payment.cdpNumber}
+                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, cdpNumber: event.target.value }})}  
+                                      fullWidth/>
+                                </Grid>   
+
+                                 <Grid item xs={12} md={12} lg={6} >
+                                    <TextField 
+                                      name="total" 
+                                      label="Total asignado"
+                                      value={data.payment.total}
+                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, total: event.target.value }})}  
+                                      fullWidth/>
+                                </Grid>
+
+                                <Grid item xs={12} md={12} lg={12} >               
+                                  <DinamicInput 
+                                     values={data.payment.fees}
+                                     model={{
+                                        amount  : '',
+                                        date : null,
+                                        id: uuidv4()
+                                     }} 
+                                     setFunction={(values) => setData({ ...data,  payment:{ ...data.payment, fees:values}})}
+                                     title={"Pagos"}
+                                     type={"pay"}/>
+                                </Grid>                            
+                            </Grid>
                      
+                        </AccordionDetails>
+                      </Accordion> 
+
                       <Accordion >
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                           <Typography>Documentos</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Grid container >  
+                            <Grid container spacing={4}>  
 
-                              <iframe scrolling='no' type="text/html" width="100%" height="100%" src="https://steelheart.tk" ></iframe> 
+                             <Grid item xs={6} md={6} lg={6} >   
+                                <UploadButton 
+                                  file={data.files.cdp}
+                                  label = {"CDP"}                           
+                                  onChange={(e) => { setData({ ...data,  files:{ ...data.files, cdp: e.target.files[0] }}) }}      
+                                />
+                             </Grid>
+
+                              <Grid item xs={6} md={6} lg={6} >   
+                                <UploadButton 
+                                  file={data.files.arl}
+                                  label = {"arl"}
+                                  onChange={(e) => { setData({ ...data, files:{ ...data.files, arl: e.target.files[0] }}) }}      
+                                />
+                              </Grid>
                                                            
                             </Grid>
                      
@@ -511,4 +481,4 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
     );
 }
 
-export default InternshipForm;
+export default MinutaForm;

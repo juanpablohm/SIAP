@@ -1,21 +1,24 @@
 import {v4 as uuidv4} from "uuid";
 
 export var Internship = {
+    type: '',
     dependency:'',
+    agreementId : '',
+    professorId: '',
     modality: '',
-    initDate: '2014-08-18T21:11:54',
+    startDate: '2014-08-18T21:11:54',
     endDate: '2014-08-18T21:11:54',
     entryTime: null,
     exitTime: null,
     weeksHour: '',
-    isPaid: '',
-    genObjetives: [
+    isPaid: true,
+    generalGoal: [
            {
              desc  : "",
              id: uuidv4(),
            },
          ],
-    speObjetives: [
+    specificGoal: [
            {
              desc  : "",
              id: uuidv4(),
