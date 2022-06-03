@@ -14,51 +14,59 @@ import AddTaskIcon from '@mui/icons-material/AddTask';
 import { IconButton } from '@mui/material';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 
-export default function DialogSelect() {
+const DialogSelect = ({handleSumit}) => {
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState('');
+  const [status, setStatus] = React.useState('2');
 
   const handleChange = (event) => {
-    setAge(Number(event.target.value) || '');
+    setStatus(Number(event.target.value) || '');
   };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = (event, reason) => {
+  const handleOk = (event, reason) => {
     if (reason !== 'backdropClick') {
       setOpen(false);
     }
+    handleSumit(status);
+  };
+
+  const handleClose = (event, reason) => {
+      setOpen(false);   
   };
 
   return (
     <>
       <IconButton onClick={handleClickOpen} aria-label="delete" > <PublishedWithChangesRoundedIcon fontSize="large" color='primary' /></IconButton>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-        <DialogTitle>Cambiar estado practica</DialogTitle>
+        <DialogTitle>Cambiar estado práctica</DialogTitle>
         <DialogContent>
           <Box component="form" sx={{p:1, display: 'flex', flexWrap: 'wrap' }}>
             <FormControl fullWidth >
               <InputLabel htmlFor="demo-dialog-native">Estado</InputLabel>
               <Select
                 native
-                value={age}
+                value={status}
                 onChange={handleChange}
                 input={<OutlinedInput label="Estado" id="demo-dialog-native" />}
               >
-                <option value={10}>Aprobada</option>
-                <option value={20}>Rechazada</option>
-                <option value={30}>Incompleta</option>
+                <option value={1}>Aprobada Docente</option>
+                <option value={2}>Aprobada Comite C.</option>
+                <option value={3}>Aprobada C. Costos</option>
+                <option value={4}>Rechazada</option>
               </Select>
             </FormControl>          
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button  variant="contained" onClick={handleClose}>Ok</Button>
+          <Button  variant="contained" onClick={handleOk}>Ok</Button>
         </DialogActions>
       </Dialog>
     </>
   );
 }
+
+export default DialogSelect;

@@ -1,7 +1,7 @@
 export var Supervisor = {
     firstName: '',
     lastName: '',
-    cellphone: '',
+    cellPhone: '',
     email: '',
     position: ''
  };

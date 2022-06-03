@@ -22,10 +22,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MedicalServicesRoundedIcon from '@mui/icons-material/MedicalServicesRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded';
-import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
-import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
-import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 
 var Student = {
   firstName : 'Juan Pablo',
@@ -52,357 +53,55 @@ var Agreement = {
   consecutive: '303'
 };
 
-const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreement}) =>{
+const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
 
-  const [data, setData] = useState(InternshipFormModel);
-
-  student = Student;
-  agreement = Agreement;
+  const [data, setData] = useState(MinutaFormModel);
+  
+  let url = "https://steelheart.tk/file-uploader/index.php?key=SIAP&id=564" ;
 
   const handledSumit = () =>{ 
         onSumitFunc(data);
   }
+
+  console.log(url);
  
     return (
             <Grid item sx={{mt:1, mx:"auto"}} xs={10} md={9} lg={9}>
             <Card  elevation={15} >  
 
               <Typography  sx={{color:'#111111', mb:2, mt:3, fontWeight: 600}} component="h5" variant="h5" align="center">
-                    Solicitud de practica
+                    Minuta
               </Typography>
               <Divider />
               <CardContent>
                    
                     <Box>
-                      <Accordion >
-                        
+                      <Accordion >                       
                         <AccordionDetails>
                             <Grid container spacing={4}>
-                              <Grid item  xs={12} md={6} lg={6} >
+                              <Grid item  xs={12} md={12} lg={12} >
                                 <Card  >
                                     <CardHeader
-                                      avatar={<PersonRoundedIcon fontSize="large"/>}                       
-                                      title={student.firstName + " " + student.lastName}
-                                      subheader={student.program }
+                                      avatar={<AssignmentRoundedIcon fontSize="large"/>} 
+                                      action={
+                                        <IconButton aria-label="settings">
+                                          <LaunchRoundedIcon />
+                                        </IconButton>
+                                      }                      
+                                      title={Internship.studentName + "(C.C." + Internship.studentCédula +") - " +  Internship.companyName }
+                                      subheader={Student.universityName +" - " + Student.program }
                                     />  
-                                    <Divider />                       
-                                    <CardContent >
-                                      <List sx={{pr:3, pl:3, pt:0 , pb:0}} >
-                                        <Grid container  >
-                                          <Grid item xs={12} lg={6}>
-                                            <ListItem  >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <BadgeRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={student.documentId}/>
-                                            </ListItem>
-                                          </Grid>
-                                          <Grid item xs={12} lg={6}>
-                                            <ListItem  >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <MedicalServicesRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={student.eps}/>
-                                            </ListItem>                           
-                                          </Grid>
-                                          <Grid item xs={12} lg={12}>
-                                            <ListItem >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <EmailRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={student.email} />
-                                            </ListItem>
-                                          </Grid>
-                                          <Grid item xs={12} lg={12} >
-                                            <ListItem >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <SchoolRoundedIcon fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText  secondary={student.university}/>
-                                            </ListItem>
-                                         </Grid>                                       
-                                        </Grid>
-                                      </List>
-                                    </CardContent>                            
+                                                  
                                   </Card>
                               </Grid>
 
-                              <Grid item  xs={12} md={6} lg={6} >
-                                <Card >
-                                    <CardHeader
-                                      avatar={
-                                        <BusinessRoundedIcon fontSize="large" />
-                                      }
-                                      action={
-                                        <IconButton aria-label="settings">
-                                          <VisibilityRoundedIcon />
-                                        </IconButton>
-                                      }
-                                      title={agreement.entity}
-                                      subheader={agreement.nit + " " + agreement.status}
-                                    />
-                                    <Divider />                          
-                                  
-                                    <CardContent >
-                                      <List sx={{pr:3, pl:3, pt:2.504 , pb:3}} >
-                                        <Grid container  >
-                                          <Grid item xs={12} lg={8}>
-                                            <ListItem  >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <DateRangeRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={agreement.startDate + " - " + agreement.endDate}/>
-                                            </ListItem>
-                                          </Grid>
-                                          <Grid item xs={12} lg={4}>
-                                            <ListItem  >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <NumbersRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={agreement.consecutive}/>
-                                            </ListItem>
-                                          </Grid>
-                                          <Grid item xs={12} lg={6}>
-                                            <ListItem >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <ChangeCircleRoundedIcon  fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText secondary={agreement.prorogation} />
-                                            </ListItem>
-                                          </Grid>
-                                          <Grid item xs={12} lg={6} >
-                                            <ListItem >
-                                              <ListItemIcon sx={{minWidth:'30px'}}>
-                                                <StyleRoundedIcon fontSize="small"/>
-                                              </ListItemIcon>
-                                              <ListItemText  secondary={agreement.type}/>
-                                            </ListItem>
-                                         </Grid> 
-
-                                                                        
-                                        </Grid>
-                                      </List>
-                                    </CardContent>    
-                                                        
-                                  </Card>
-                              </Grid>  
-
-                              <Grid item xs={12} md={12} lg={12} >
-                                  <SelectInput  
-                                    name="professor" 
-                                    label="Profesor asesor"
-                                    options={getProfessor()} 
-                                    value={data.internship.professorId}
-                                    onChange={(event) => setData({ ...data, internship:{ ...data.internship,  professorId: event.target.value }})} 
-                                    fullWidth/>
-                              </Grid>                 
+                            
+         
                             </Grid>                                        
                         </AccordionDetails>
                       </Accordion>
-
-                    <Accordion >
-                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">           
-                          <Typography >Información de la empresa</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={4}>
-                              
-
-                              <Grid item xs={12} md={12} lg={12} >
-                                <TextField 
-                                name="dependencyCompany" 
-                                label="Dependencia donde desarrolla la práctica"
-                                value={data.internship.dependency}
-                                onChange={(event) => setData({ ...data, internship:{ ...data.internship,  dependency: event.target.value }})}     
-                                fullWidth/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={6} >
-                                <TextField 
-                                name="nameOfficer" 
-                                label="Nombres del funcionario encargado"  
-                                value={data.supervisor.firstName}
-                                onChange={(event) => setData({ ...data,  supervisor:{ ...data.supervisor, firstName: event.target.value }})}  
-                                fullWidth/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={6} >
-                                <TextField 
-                                name="lastNameOfficer" 
-                                label="Apellidos del funcionario encargado"  
-                                value={data.supervisor.lastName}
-                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, lastName: event.target.value }})}  
-                                fullWidth/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={12} >
-                                <TextField 
-                                name="positionOfficer" 
-                                label="Cargo del funcionario"
-                                value={data.supervisor.position}
-                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, position: event.target.value }})}    
-                                fullWidth/>
-                              </Grid>
-
-                              <Grid item  xs={12} md={12} lg={6} >
-                                <TextField 
-                                name="cellphoneOfficer" 
-                                label="Telefono del funcionario"
-                                value={data.supervisor.cellphone}
-                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, cellphone: event.target.value }})}    
-                                fullWidth/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={6} >
-                                <TextField 
-                                name="emailOfficer" 
-                                label="Email del funcionario"  
-                                value={data.supervisor.email}
-                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, email: event.target.value }})}  
-                                fullWidth/>
-                              </Grid>
-                      
-                            </Grid>
-                        </AccordionDetails>
-                      </Accordion>
-
-                      <Accordion >
-                        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                          <Typography>Información de la practica</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={4}>
-
-                              <Grid item xs={12} md={12} lg={12} >
-                                <SelectInput  
-                                  name="modality" 
-                                  label="Modalidad"
-                                  options={getModality()} 
-                                  value={data.internship.modality}
-                                  onChange={(event) => setData({ ...data, internship:{ ...data.internship, modality: event.target.value }})} 
-                                  fullWidth/>
-                              </Grid>
+ 
                 
-                              <Grid item xs={12} md={12} lg={4} >
-                                <DatePickerMUI 
-                                  name="initDateInternship"
-                                  label="Fecha de inicio"
-                                  value={data.internship.startDate} 
-                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship, startDate: newValue }})}/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={4} >
-                                <DatePickerMUI 
-                                  name="endDateInternship"
-                                  label="Fecha de terminación"
-                                  value={data.internship.endDate} 
-                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship,endDate: newValue }})}/>
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={4} >
-                                  <Typography sx={{mt:1, textAlign:'center', fontSize: 15 }} color="text.secondary" >
-                                      Es remunerada <Checkbox 
-                                                    name='isPaid'
-                                                    value={data.internship.isPaid} 
-                                                    onChange={(event) => setData({ ...data, internship:{ ...data.internship, isPaid: event.target.checked }})}
-                                                    defaultChecked />
-                                   </Typography>          
-                              </Grid>
-
-                              <Grid item xs={12} md={12} lg={12} >                             
-                                  <Paper sx={{p:3}}>                                
-                                    <Grid container spacing={4}>
-                                        <Grid item xs={12} md={12} lg={2} >
-                                        <Typography sx={{textAlign:'center', fontSize: 15 }} color="text.secondary" >
-                                                    Horario previsto
-                                          </Typography>
-                                        </Grid>
-                                      
-                                        <Grid item xs={12} md={12} lg={5} >
-                                            <TimePicker
-                                              name="entryTimeInternship"
-                                              label="Hora de entrada"
-                                              value={data.internship.entryTime} 
-                                              onChange={(newValue) => setData({ ...data, internship:{ ...data.internship, entryTime: newValue }})}/>                                 
-                                        </Grid>
-
-                                        <Grid item xs={12} md={12} lg={5}>
-                                            <TimePicker
-                                                name="exitTimeInternship"
-                                                label="Hora de salida"
-                                                value={data.internship.exitTime} 
-                                                onChange={(newValue) => setData({ ...data, internship:{ ...data.internship, exitTime: newValue }})}/>
-                                        </Grid>                                   
-                                    </Grid>
-                                  </Paper>
-                              </Grid>           
-
-                            </Grid>
-
-                        </AccordionDetails>
-                      </Accordion>
-
-
-                      <Accordion >
-                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                          <Typography>Desarrollo de la practica</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={4}>              
-                                <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
-                                     values={data.internship.generalGoal}
-                                     model={{
-                                        desc  : "",
-                                        id: uuidv4()
-                                     }} 
-                                     setFunction={(values) => setData({ ...data, internship:{ ...data.internship, generalGoal: values}})}
-                                     title={"Objetivos Generales"}
-                                     type={"genObjetives"}/>
-                                </Grid> 
-
-                               <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
-                                     values={data.internship.specificGoal}
-                                     model={{
-                                        desc  : "",
-                                        id: uuidv4()
-                                     }} 
-                                     setFunction={(values) => setData({ ...data, internship:{ ...data.internship, specificGoal: values}})}
-                                     title={"Objetivos Especificos"}
-                                     type={"speObjetives"}/>
-                                </Grid>
-
-                                <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
-                                     values={data.products}
-                                     model={{
-                                        desc  : "",
-                                        date : null,
-                                        id: uuidv4()
-                                     }} 
-                                     setFunction={(values) => setData({ ...data, products:values})}
-                                     title={"Productos esperados"}
-                                     type={"products"}/>
-                                </Grid>
-
-
-                                <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
-                                     values={data.reports}
-                                     model={{
-                                        desc  : "",
-                                        date : null,
-                                        id: uuidv4()
-                                     }} 
-                                     setFunction={(values) => setData({ ...data, reports:values})}
-                                     title={"Informes"}
-                                     type={"delivery"}/>
-                                </Grid>                                 
-                            </Grid>
-                        </AccordionDetails>
-                      </Accordion> 
-
                       <Accordion >
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
                           <Typography>Información financiera</Typography>
@@ -412,9 +111,9 @@ const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreeme
                                 <Grid item xs={12} md={12} lg={6} >
                                     <TextField 
                                       name="cdp" 
-                                      label="Numero de CDP"
-                                      value={data.payment.cdpNumber}
-                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, cdpNumber: event.target.value }})}  
+                                      label="Número de CDP"
+                                      value={""}
+                                      onChange={(event) => setData({  })}  
                                       fullWidth/>
                                 </Grid>   
 
@@ -422,23 +121,42 @@ const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreeme
                                     <TextField 
                                       name="total" 
                                       label="Total asignado"
-                                      value={data.payment.total}
-                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, total: event.target.value }})}  
+                                      value={""}
+                                      onChange={(event) => setData({ })}  
                                       fullWidth/>
-                                </Grid>
+                                </Grid> 
 
-                                <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
-                                     values={data.payment.fees}
-                                     model={{
-                                        amount  : '',
-                                        date : null,
-                                        id: uuidv4()
-                                     }} 
-                                     setFunction={(values) => setData({ ...data,  payment:{ ...data.payment, fees:values}})}
-                                     title={"Pagos"}
-                                     type={"pay"}/>
-                                </Grid>                            
+                                <Grid item xs={12} md={12} lg={6} >
+                                    <TextField 
+                                      name="compromise" 
+                                      label="Número compromiso presupuestal"
+                                      value={""}
+                                      onChange={(event) => setData({ })}  
+                                      fullWidth/>
+                                </Grid> 
+
+                                <Grid item xs={12} md={12} lg={3} >
+                                  
+                                    <Typography sx={{textAlign:'center', mt:2, fontSize: 15 }} color="text.secondary" >
+                                                    Periodo academico 
+                                    </Typography> 
+                                 
+                                
+                                </Grid>   
+
+                                <Grid item xs={12} md={12} lg={3} >
+                                    <RadioGroup
+                                          row
+                                          sx={{width:"150px", mt:1}}
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          name="row-radio-buttons-group"
+                                          value={data.period}
+                                          onChange={(event) => setData({ })}
+                                        >
+                                          <FormControlLabel value="1" control={<Radio />} label="I" />
+                                          <FormControlLabel value="2" control={<Radio />} label="II" />
+                                    </RadioGroup>
+                                </Grid>                                
                             </Grid>
                      
                         </AccordionDetails>
@@ -446,27 +164,38 @@ const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreeme
 
                       <Accordion >
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                          <Typography>Documentos</Typography>
+                          <Typography>Información adicional</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Grid container spacing={4}>  
-
-                             <Grid item xs={6} md={6} lg={6} >   
-                                <UploadButton 
-                                  file={data.files.cdp}
-                                  label = {"CDP"}                           
-                                  onChange={(e) => { setData({ ...data,  files:{ ...data.files, cdp: e.target.files[0] }}) }}      
-                                />
-                             </Grid>
-
-                              <Grid item xs={6} md={6} lg={6} >   
-                                <UploadButton 
-                                  file={data.files.arl}
-                                  label = {"arl"}
-                                  onChange={(e) => { setData({ ...data, files:{ ...data.files, arl: e.target.files[0] }}) }}      
-                                />
-                              </Grid>
+                            <Grid container spacing={4}>              
                                                            
+                              <Grid item xs={12} md={12} lg={12} >               
+                                  <DinamicInput 
+                                     values={data.notes}
+                                     model={{
+                                        description  : "",
+                                        id: uuidv4()
+                                     }} 
+                                     setFunction={(values) => setData({ ...data, notes:values})}
+                                     title={"Notas"}
+                                     type={"genObjetives"}/>
+                                </Grid> 
+
+                                                                    
+                            </Grid>
+                     
+                        </AccordionDetails>
+                      </Accordion> 
+
+                      <Accordion >
+                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                          <Typography>Documentos (CDP, compromiso presupuestal, etc. )</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={4}>                                
+                              <Grid item xs={12} md={12} lg={12} >   
+                                    <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={url} ></iframe>                                                                         
+                              </Grid>                                                       
                             </Grid>
                      
                         </AccordionDetails>
@@ -474,7 +203,7 @@ const  MinutaForm=({InternshipFormModel, onSumitFunc, labelBtn, student, agreeme
                     </Box>            
               </CardContent>    
 
-              <Button variant="contained" onClick={handledSumit} sx={{ mt:2, backgroundColor:"#000000", "&:hover":{backgroundColor:"#151515"}}}  size='large' fullWidth>{labelBtn}</Button>
+              <Button variant="contained" onClick={handledSumit} sx={{ mt:2, backgroundColor:"#000000", "&:hover":{backgroundColor:"#151515"}}}  size='large' fullWidth>Guardar</Button>
                   
             </Card>              
           </Grid>          

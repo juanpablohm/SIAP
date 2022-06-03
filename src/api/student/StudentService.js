@@ -26,4 +26,28 @@ export async function getStudentById(studentId) {
     }catch(err){
        throw err;
     }
+};
+
+
+export async function getStudents() {
+
+    try{
+        let url = new URL(process.env.REACT_APP_API + baseEndpoint);
+
+        let response = await fetch(url, {
+            'method': "GET",
+            'mode': 'cors',
+            'headers': {
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+
+        let students = await response.json(); 
+
+        return students;
+
+    }catch(err){
+       throw err;
+    }
 }

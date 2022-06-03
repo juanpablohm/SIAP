@@ -28,7 +28,9 @@ import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import { getStudentById } from '../api/student/StudentService';
 import { enumEPS } from '../models/student';
+import { enumType } from '../models/agreement';
 import { getAgreementById } from '../api/agreement/AgreementService';
+import { getProfessors } from '../api/professor/ProfessorServices';
 
 var Agreement = {
   entity: 'Universidad de Caldas',
@@ -56,13 +58,25 @@ var Student = {
 };
 
 
-const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, agreementId}) =>{
+const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, additionalComponents, agreementId}) =>{
 
   const [data, setData] = useState(InternshipFormModel);
   const [student, setStudent] = useState(null);
   const [agreement, setAgreement] = useState(null);
+  const [professor, setProfessor] = useState(null);
   const [error, setError] = useState(false);
 
+
+  const getProfessorData = async () => { 
+    try {
+      let professorResponse = await getProfessors(); 
+
+      professorResponse.map((obj) => (obj.value = obj.id, obj.label = obj.name + " " + obj.lastName));
+      setProfessor(professorResponse);    
+    }catch(e){
+      setError(true);
+    }
+  };
 
   const getStudent = async () => { 
     try {
@@ -92,20 +106,11 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
   useEffect(() => {
     getStudent();
     getAgreement();
+    getProfessorData();
   }, [])
   
 
   const handledSumit = () =>{ 
-
-    let generalGoal = "";
-    let specificGoal = "";
-   
-    data.internship.generalGoal.map((obj) => (generalGoal += obj.desc + ";" ));
-    data.internship.specificGoal.map((obj) => (specificGoal += obj.desc + ";" ));
-   
-    data.internship.generalGoal = generalGoal;
-    data.internship.specificGoal = specificGoal;
-
     data.internship.agreementId = agreementId; 
     data.internship.studentId = studentId;
     onSumitFunc(data);
@@ -123,7 +128,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
       </Grid>
     );
   }
-  else if(student == null || agreement == null) {
+  else if(student == null || agreement == null || professor == null) {
     return ( 
       <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={9} lg={9}> 
              <Typography 
@@ -139,7 +144,6 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
   return (
             <Grid item sx={{mt:1, mx:"auto"}} xs={10} md={9} lg={9}>
             <Card  elevation={15} >  
-            
               <Typography  sx={{color:'#111111', mb:2, mt:3, fontWeight: 600}} component="h5" variant="h5" align="center">
                     Solicitud de practica
               </Typography>
@@ -191,7 +195,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                               <ListItemIcon sx={{minWidth:'30px'}}>
                                                 <SchoolRoundedIcon fontSize="small"/>
                                               </ListItemIcon>
-                                              <ListItemText  secondary={student.university}/>
+                                              <ListItemText  secondary={student.universityName}/>
                                             </ListItem>
                                          </Grid>                                       
                                         </Grid>
@@ -212,7 +216,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                         </IconButton>
                                       }
                                       title={agreement.companyName}
-                                      subheader={agreement.companyNit + " " + agreement.status}
+                                      subheader={agreement.companyNit + " " + enumType(agreement.status)}
                                     />
                                     <Divider />                          
                                   
@@ -259,12 +263,12 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                                         
                                   </Card>
                               </Grid>  
-
+                                   
                               <Grid item xs={12} md={12} lg={12} >
                                   <SelectInput  
                                     name="professor" 
                                     label="Profesor asesor"
-                                    options={getProfessor()} 
+                                    options={professor} 
                                     value={data.internship.professorId}
                                     onChange={(event) => setData({ ...data, internship:{ ...data.internship,  professorId: event.target.value }})} 
                                     fullWidth/>
@@ -321,8 +325,8 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                 <TextField 
                                 name="cellphoneOfficer" 
                                 label="Telefono del funcionario"
-                                value={data.supervisor.cellphone}
-                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, cellphone: event.target.value }})}    
+                                value={data.supervisor.cellPhone}
+                                onChange={(event) => setData({ ...data, supervisor:{ ...data.supervisor, cellPhone: event.target.value }})}    
                                 fullWidth/>
                               </Grid>
 
@@ -360,8 +364,8 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                 <DatePickerMUI 
                                   name="initDateInternship"
                                   label="Fecha de inicio"
-                                  value={data.internship.startDate} 
-                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship, startDate: newValue }})}/>
+                                  value={data.internship.startdate} 
+                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship, startdate: newValue.toISOString() }})}/>
                               </Grid>
 
                               <Grid item xs={12} md={12} lg={4} >
@@ -369,7 +373,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                   name="endDateInternship"
                                   label="Fecha de terminación"
                                   value={data.internship.endDate} 
-                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship,endDate: newValue }})}/>
+                                  onChange={(newValue) => setData({ ...data, internship:{ ...data.internship,endDate: newValue.toISOString() }})}/>
                               </Grid>
 
                               <Grid item xs={12} md={12} lg={4} >
@@ -391,7 +395,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                       onChange={(event) => setData({ ...data, payment:{ ...data.payment, salary: event.target.value }})}  
                                       fullWidth/>
                                 </Grid>
-                              ):(data.payment.salary=null)}
+                              ):(null)}
                               
                               <Grid item xs={12} md={12} lg={12} >                             
                                   <Paper sx={{p:3}}>                                
@@ -437,7 +441,7 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                   <DinamicInput 
                                      values={data.internship.generalGoal}
                                      model={{
-                                        desc  : "",
+                                        description  : "",
                                         id: uuidv4()
                                      }} 
                                      setFunction={(values) => setData({ ...data, internship:{ ...data.internship, generalGoal: values}})}
@@ -447,12 +451,12 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
 
                                <Grid item xs={12} md={12} lg={12} >               
                                   <DinamicInput 
-                                     values={data.internship.specificGoal}
+                                     values={data.internship.specificGoals}
                                      model={{
-                                        desc  : "",
+                                        description  : "",
                                         id: uuidv4()
                                      }} 
-                                     setFunction={(values) => setData({ ...data, internship:{ ...data.internship, specificGoal: values}})}
+                                     setFunction={(values) => setData({ ...data, internship:{ ...data.internship, specificGoals: values}})}
                                      title={"Objetivos Especificos"}
                                      type={"speObjetives"}/>
                                 </Grid>
@@ -461,8 +465,8 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                   <DinamicInput 
                                      values={data.products}
                                      model={{
-                                        desc  : "",
-                                        date : null,
+                                        description  : "",
+                                        date : (new Date()).toISOString(),
                                         id: uuidv4()
                                      }} 
                                      setFunction={(values) => setData({ ...data, products:values})}
@@ -475,8 +479,8 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                                   <DinamicInput 
                                      values={data.reports}
                                      model={{
-                                        desc  : "",
-                                        date : null,
+                                        description  : "",
+                                        date : (new Date()).toISOString(),
                                         id: uuidv4()
                                      }} 
                                      setFunction={(values) => setData({ ...data, reports:values})}
@@ -487,21 +491,48 @@ const  InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, a
                         </AccordionDetails>
                       </Accordion> 
 
-                     
-                      <Accordion >
+                      {data.internship.isPaid ? (
+                      <Accordion>
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                          <Typography>Documentos</Typography>
+                          <Typography>Información financiera</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Grid container >  
+                            <Grid container spacing={4}>                                                                    
 
-                              <iframe scrolling='no' type="text/html" width="100%" height="100%" src="https://steelheart.tk" ></iframe> 
-                                                           
+                                <Grid item xs={12} md={12} lg={12} >               
+                                  <DinamicInput 
+                                     values={data.payment.fees}
+                                     model={{
+                                        amount  : '',
+                                        date : (new Date()).toISOString(),
+                                        id: uuidv4()
+                                     }} 
+                                     setFunction={(values) => setData({ ...data,  payment:{ ...data.payment, fees:values}})}
+                                     title={"Pagos"}
+                                     type={"pay"}/>
+                                </Grid>                            
                             </Grid>
                      
                         </AccordionDetails>
-                      </Accordion>                         
-                    </Box>            
+                      </Accordion> 
+                      ):(null)}
+
+                      {additionalComponents ? (
+                        <Accordion >
+                          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                            <Typography>Documentos (ARL, hoja de vida, carta de aceptación)</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                              <Grid container spacing={4}>                                        
+                                <Grid item xs={12} md={12} lg={12} >   
+                                    <iframe  frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id="+ data.internship.id}  ></iframe>                                                                            
+                                </Grid>                                                         
+                              </Grid>                 
+                          </AccordionDetails>
+                        </Accordion>
+                      ):(null)}  
+                                                         
+                    </Box>                              
               </CardContent>    
 
               <Button variant="contained" onClick={handledSumit} sx={{ mt:2, backgroundColor:"#000000", "&:hover":{backgroundColor:"#151515"}}}  size='large' fullWidth>{labelBtn}</Button>

@@ -1,6 +1,6 @@
 import { RequiredArgumentError } from "../errors";
 
-const baseEndpoint = 'api/Supervisor';
+const baseEndpoint = 'api/Supervisor/';
 
 export async function createSupervisor(newSupervisor) {
 
@@ -26,3 +26,29 @@ export async function createSupervisor(newSupervisor) {
        throw err;
     }
 }
+
+export async function getSupervisorById(supervisorId) {
+
+    if (supervisorId == null) throw new RequiredArgumentError('id');
+
+    try{
+        let url = new URL(process.env.REACT_APP_API + baseEndpoint  + "GetSupervisorById/");
+        url.searchParams.set('id', supervisorId);
+
+        let response = await fetch(url, {
+            'method': "GET",
+            'mode': 'cors',
+            'headers': {
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+
+        let supervisor = await response.json(); 
+
+        return supervisor;
+
+    }catch(err){
+       throw err;
+    }
+};

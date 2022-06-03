@@ -51,3 +51,28 @@ export async function getAgreements() {
        throw err;
     }
 }
+
+export async function createAgreement(newAgreement) {
+
+    if (newAgreement == null) throw new RequiredArgumentError('internship');
+
+    try{
+        let url = new URL(process.env.REACT_APP_API + "api/Company/AddCompanyAgreement");
+
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(newAgreement)
+        })
+
+        let agreement = await response.json(); 
+
+        return agreement;
+
+    }catch(err){
+       throw err;
+    }
+};

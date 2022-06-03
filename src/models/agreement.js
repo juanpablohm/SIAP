@@ -1,11 +1,27 @@
-
-
-
 export var Agreement = {
-    entity: '',
-    nit: '',
-    startDate: '',
-    endDate: '',
-    status: '',
-    consecutive: ''
+    type: "Marco",
+    observations: "",
+    name: "",
+    supervisorName: "",
+    extension: "Automatica",
+    term: "",
+    endDate: (new Date()).toISOString(),
+    startDate: (new Date()).toISOString(),
+    date: (new Date()).toISOString(),
+    status: 0,
+    object: "",
+    secop: "",
+    registeredNumber: "",
+    liquidation: "",
+    amount: 0,
+    petitioner: ""
+};
+
+export function enumType(eps){
+    switch (eps) {
+        case 1:
+            return "Activo";
+        default:
+            return "Finalizado";
+    }
 };

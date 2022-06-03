@@ -1,22 +1,22 @@
 import {v4 as uuidv4} from "uuid";
 
 export var Reports = [{
-    desc  : "Primer informe de actividades",
+    description  : "Primer informe de actividades",
     id: uuidv4(),
-    date: null
+    date: (new Date()).toISOString()
   },
   {
-    desc  : "Segundo informe de actividades",
+    description  : "Segundo informe de actividades",
     id: uuidv4(),
-    date: null
+    date: (new Date()).toISOString()
   },
   {
-    desc  : "Informe final de actividades",
+    description  : "Informe final de actividades",
     id: uuidv4(),
-    date: null
+    date: (new Date()).toISOString()
   },
   {
-    desc  : "Concertación de objetivos",
+    description  : "Concertación de objetivos",
     id: uuidv4(),
-    date: null
+    date: (new Date()).toISOString()
 }];

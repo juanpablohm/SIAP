@@ -48,11 +48,11 @@ export function getProfessor() {
 
   const proffesor = [
       {
-        value: '1234',
+        value: '1',
         label: 'Gustavo Adolfo Isaza Echeverri',
       },
       {
-        value: '123456',
+        value: '2',
         label: 'Carlos Alberto Ruíz Villa',
       }
     ];

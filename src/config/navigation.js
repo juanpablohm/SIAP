@@ -14,6 +14,18 @@ export const navigationItems = {
         to: '/convenios', 
         text:'Convenios',
         icon: 'gavel',
+      },   
+      {
+        name: 'practicantes',
+        to: '/practicantes', 
+        text:'Practicantes',
+        icon: 'school',
+      },   
+      {
+        name: 'docentes',
+        to: '/docentes', 
+        text:'Docentes',
+        icon: 'group',
       },
       {
         name: 'reportes ',

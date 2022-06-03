@@ -28,7 +28,6 @@ export default function DatePickerMUI({label, value, onChange, Style}) {
       <Stack>
         <DesktopDatePicker
           label={label}
-          inputFormat="MM/dd/yyyy"
           value={value}        
           onChange={onChange}
           renderInput={(params) => <TextField variant={getStyle()}  {...params} />}

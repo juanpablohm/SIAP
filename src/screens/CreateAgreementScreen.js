@@ -15,26 +15,24 @@ import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import { createInternship } from '../api/internship/InternshipServices';
 import { createSupervisor } from '../api/supervisor/SupervisorServices';
+import AgreementForm  from '../components/AgreementForm';
+import { Agreement } from '../models/agreement';
+import { Company } from '../models/company';
 
-const  CreateInternshipScreen=(props) =>{
+const CreateAgreementScreen=(props) =>{
 
     let navigate = useNavigate();
     const location = useLocation();
     const [error, setError] = useState(false);
     const [openConfirm, setOpenConfirm] = useState(false);
-    
-   
 
-    const InternshipFormModel = {
-        "supervisor": Supervisor,
-        "internship" : Internship,
-        "payment": Payment,
-        "reports": Reports,
-        "products": Products,
+    const AgreementFormModel = {
+        "company": Company,
+        "agreement" : Agreement,      
     }
-
+    
     const handleOk = (tipo) => {
-        navigate('/practicas');
+        navigate('/convenios');
     };
 
     const handledSumit = async (data) =>{
@@ -42,35 +40,8 @@ const  CreateInternshipScreen=(props) =>{
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
 
-            let generalGoal = "";
-            let specificGoals = "";     
+            console.log(dataSend);
 
-            dataSend.internship.generalGoal.map((obj) => (generalGoal += obj.description + ";" ));
-            dataSend.internship.specificGoals.map((obj) => (specificGoals += obj.description + ";" ));
-            dataSend.internship.generalGoal = generalGoal;
-            dataSend.internship.specificGoals = specificGoals;
-           
-            dataSend.reports.map((obj) => (delete obj['id']));
-            dataSend.products.map((obj) => (delete obj['id']));
-            dataSend.payment.fees.map((obj) => (delete obj['id']));
-
-            let supervisor = dataSend.supervisor;
-            delete dataSend['supervisor'];
-
-            let newInternship = dataSend.internship;
-            delete dataSend['internship'];
-
-            newInternship = { ...dataSend, ...newInternship }; 
-
-            console.log(newInternship);
-
-            let responseSupervisor = await createSupervisor(supervisor);  
-
-            if(responseSupervisor != null){
-                newInternship.supervisorId = responseSupervisor.id;
-                let responseInternship = await createInternship(newInternship); 
-                setOpenConfirm(true);
-            }  
         }catch(e){
             console.log(e);
             setError(true);
@@ -80,7 +51,7 @@ const  CreateInternshipScreen=(props) =>{
 
     const getDialogConfirmation = (error) => {
 
-        let texto = "Se ha creado la practica exitosamente!";
+        let texto = "Se ha creado el convenio exitosamente!";
         let tipo = "success"
 
         if(error){
@@ -101,16 +72,15 @@ const  CreateInternshipScreen=(props) =>{
     return (
             <Grid container maxWidth="lg" sx={{mt:5, mb:5, mx:"auto"}}>
                 <Grid item xs={12} md={12} lg={12} sx={{ml:3}}>
-                        <Link to={"/practicas/convenio"} style={{ textDecoration: 'none'}}>
+                        <Link to={"/convenios"} style={{ textDecoration: 'none'}}>
                         <IconButton aria-label="delete" >
                                 <ChevronLeftIcon fontSize="large" />
                         </IconButton>
                         </Link>
                 </Grid>
 
-        
-                <InternshipForm InternshipFormModel={InternshipFormModel} studentId={"3"} agreementId={location.state.agreement.id.toString()} onSumitFunc={handledSumit} labelBtn={"Crear"} />
-              
+                <AgreementForm AgreementFormModel={AgreementFormModel} onSumitFunc={handledSumit} />
+                
                 <Dialog
                     sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}
                     maxWidth="xs"
@@ -128,4 +98,4 @@ const  CreateInternshipScreen=(props) =>{
     );
 }
 
-export default CreateInternshipScreen;
+export default CreateAgreementScreen;

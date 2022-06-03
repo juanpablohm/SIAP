@@ -12,7 +12,7 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
     const handleChangeInputs = (id, name, newValue) => {
 		const index = values.findIndex((m) => m.id === id)
 
-        if( type === "pay" && name === "desc"){
+        if( type === "pay" && name === "description"){
             name = "amount";
         }
 
@@ -49,29 +49,30 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
         if (type === "genObjetives" || type === "speObjetives" ) {
             return (<Grid item md={10} lg={10}>
                         <TextField sx={{mb:2}}
-                            name="desc"
+                            name="description"
                             label={''}
                             multiline
                             size='Small'
                             maxRows={4}
-                            value={value.desc}
+                            value={value.description}
                             variant="standard" 
                             fullWidth                  
                             onChange={(e) => handleChangeInputs(value.id, e.target.name, e.target.value)}
                         />
                     </Grid>
-        )}else{
+        )} 
+        else{
             return (<>
 
                 <Grid item xs={5} md={5} lg={7}>
                 
                         <TextField sx={{mb:2}}
-                            name="desc"
+                            name="description"
                             label=""
                             multiline
                             size='Small'
                             maxRows={4}
-                            value={value.desc}
+                            value={type ==="pay" ? value.amount :value.description}
                             variant="standard" 
                             InputProps={getIcon()}
                             fullWidth                                   
