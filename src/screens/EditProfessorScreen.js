@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, IconButton, Button, Alert, AlertTitle} from "@mui/material";
-import { Link, useNavigate} from "react-router-dom";
+import { Grid, IconButton, Button, Alert, AlertTitle, CircularProgress, Typography} from "@mui/material";
+import { Link, useNavigate, useParams} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import InternshipForm from '../components/InternshipForm';
 import {  Supervisor } from '../models/supervisor';
@@ -20,19 +20,35 @@ import { Agreement } from '../models/agreement';
 import { Company } from '../models/company';
 import { Student } from '../models/student';
 import StudentForm from '../components/StudentForm';
-import { createStudent } from '../api/student/StudentService';
+import { createStudent, getStudentById, updateStudent } from '../api/student/StudentService';
+import { getProfessorById, updateProfessor } from '../api/professor/ProfessorServices';
+import ProfessorForm from '../components/ProfessorForm';
 
-const CreateStudentScreen=(props) =>{
+const EditProfessorScreen=(props) =>{
 
     let navigate = useNavigate();
     const location = useLocation();
-    const [student, setStudent] = useState(Student);
+    const [professor, setProfessor] = useState();
     const [error, setError] = useState(false);
     const [openConfirm, setOpenConfirm] = useState(false);
+    let { id } = useParams(); 
 
     const handleOk = (tipo) => {
-        navigate('/practicantes');
+        navigate('/docentes');
     };
+
+    const getProfessorData = async () => { 
+        try {
+          let studentResponse = await getProfessorById(id); 
+          setProfessor(studentResponse);    
+        }catch(e){
+           setError(true);
+        }
+    };
+
+    useEffect(() => {
+        getProfessorData();
+    }, []) 
 
     const handledSumit = async (data) =>{
  
@@ -41,14 +57,15 @@ const CreateStudentScreen=(props) =>{
 
             console.log(dataSend);
 
-            let responseStudent = await createStudent(dataSend);  
+            let responseProfessor = await updateProfessor(dataSend);  
 
-            if(responseStudent.ok){
+            console.log(responseProfessor);
+            if(responseProfessor != null){
                 setOpenConfirm(true);
             }else{
                 setError(true);
                 setOpenConfirm(true);  
-            }
+            } 
 
         }catch(e){
             console.log(e);
@@ -59,7 +76,7 @@ const CreateStudentScreen=(props) =>{
 
     const getDialogConfirmation = (error) => {
 
-        let texto = "Se ha creado el practicante exitosamente!";
+        let texto = "Se ha actualizado el docente exitosamente!";
         let tipo = "success"
 
         if(error){
@@ -77,17 +94,40 @@ const CreateStudentScreen=(props) =>{
         );
     }
 
+    if(error){
+        return ( 
+          <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={4} lg={4}> 
+                 <Typography 
+                    align="center"
+                    sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
+                      <Alert variant="filled" severity="error">Ocurrio un error, por favor intentelo más tarde!</Alert>
+                 </Typography>                
+          </Grid>
+        );
+    }
+    else if(professor == null ) {
+    return ( 
+        <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={9} lg={9}> 
+                <Typography
+                align="center"
+                sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
+                    <CircularProgress/>
+                </Typography>                
+        </Grid>
+    );
+    }
+
     return (
             <Grid container maxWidth="lg" sx={{mt:5, mb:5, mx:"auto"}}>
                 <Grid item xs={12} md={12} lg={12} sx={{ml:3}}>
-                        <Link to={"/practicantes"} style={{ textDecoration: 'none'}}>
+                        <Link to={"/docentes"} style={{ textDecoration: 'none'}}>
                         <IconButton aria-label="delete" >
                                 <ChevronLeftIcon fontSize="large" />
                         </IconButton>
                         </Link>
                 </Grid>
 
-                <StudentForm StudentFormModel={student} onSumitFunc={handledSumit} />
+                <ProfessorForm ProfessorFormModel={professor} onSumitFunc={handledSumit} />
                 
                 <Dialog
                     sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}
@@ -106,4 +146,4 @@ const CreateStudentScreen=(props) =>{
     );
 }
 
-export default CreateStudentScreen;
+export default EditProfessorScreen;

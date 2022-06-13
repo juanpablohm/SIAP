@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, IconButton, Button, ButtonGroup, Badge, Alert, CircularProgress, Typography, MenuItem, Select, Chip, Accordion, AccordionSummary, AccordionDetails} from "@mui/material";
+import { Grid, IconButton, Button, ButtonGroup, Badge, Alert, CircularProgress, Typography, MenuItem, Select, Chip, Accordion, AccordionSummary, AccordionDetails, Tooltip} from "@mui/material";
 import { Link, useParams, useNavigate} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import InternshipForm from '../components/InternshipForm';
@@ -17,6 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
 import DownloadForOfflineRoundedIcon from '@mui/icons-material/DownloadForOfflineRounded';
 import {v4 as uuidv4} from "uuid";
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 import { getSupervisorById } from '../api/supervisor/SupervisorServices';
 import { getInternshipById, updateInternshipStatus, updateInternship } from '../api/internship/InternshipServices';
@@ -38,6 +39,7 @@ const  EditInternshipScreen = (props) =>{
       "reports": null,
       "products": null,
     }
+    
 
     const getInternshipsData = async () => { 
       try {
@@ -212,8 +214,19 @@ const  EditInternshipScreen = (props) =>{
                     orientation="vertical"
                     aria-label="vertical outlined button group"
                 >
+                    
                     <DialogSelect handleSumit={handleChangeStatus} /> 
-                    <IconButton aria-label="delete" > <RateReviewIcon  fontSize="large" color='primary'/> </IconButton>
+                
+
+                    <Tooltip title="Comentar practica">
+                      <IconButton aria-label="delete" > <RateReviewIcon  fontSize="large" color='primary'/> </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Descargar solicitud de practica">
+                      <a target="_blank" href={"https://steelheart.tk/pdf-generator/index.php?key=SIAP&doc=practica&id=" + id}>
+                        <IconButton aria-label="delete" > <DownloadForOfflineRoundedIcon  fontSize="large" color='primary'/> </IconButton>
+                      </a>
+                    </Tooltip>
 
                     <IconButton aria-label="delete" > <DownloadForOfflineRoundedIcon  fontSize="large" color='primary'/> </IconButton>
                     

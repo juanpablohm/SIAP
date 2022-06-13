@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, IconButton, Button, Alert, AlertTitle, ButtonGroup, Typography, CircularProgress, Tooltip} from "@mui/material";
+import { Grid, IconButton, Button, Alert, AlertTitle, ButtonGroup, Typography, CircularProgress} from "@mui/material";
 import { Link, useNavigate, useParams} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import InternshipForm from '../components/InternshipForm';
@@ -22,9 +22,9 @@ import { getInternshipById } from '../api/internship/InternshipServices';
 import { getStudentById } from '../api/student/StudentService';
 import { getMinutaById, updateMinuta } from '../api/minuta/MinutaServices';
 import {v4 as uuidv4} from "uuid";
+import ProfessorEvaluationForm from '../components/ProfessorEvaluationForm';
 
-
-const  MinutaScreen=(props) =>{
+const  ProfessorEvaluationScreen=(props) =>{
 
     let [minuta, setMinuta] = useState(Minuta);
     let navigate = useNavigate();
@@ -169,32 +169,10 @@ const  MinutaScreen=(props) =>{
 
             </Grid>
         
-            <Grid item xs={12} md={12} lg={12} sx={{mt:10, ml:3, position: 'absolute'}}>
+         
 
-            <ButtonGroup
-                orientation="vertical"
-                aria-label="vertical outlined button group"
-            >
-                <SetStateDialog /> 
-
-                <Tooltip title="Comentar minuta">
-                    <IconButton aria-label="delete" > <RateReviewIcon  fontSize="large" color='primary'/> </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Descargar documento minuta">
-                    <a target="_blank" href={"https://steelheart.tk/pdf-generator/index.php?key=SIAP&doc=minuta&id=" + internship.minutaId}>
-                        <IconButton aria-label="delete" > <DownloadForOfflineRoundedIcon  fontSize="large" color='primary'/> </IconButton>
-                    </a>
-                </Tooltip>
-                
-            </ButtonGroup>
-            </Grid>
-
-            <MinutaForm MinutaFormModel={minuta}  
-                            Student={student}    
-                            Internship={internship}                  
-                            onSumitFunc={handledSumit} 
-            />  
+            <ProfessorEvaluationForm  onSumitFunc={handledSumit} 
+            />   
             <Dialog
                 sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}
                 maxWidth="xs"
@@ -213,4 +191,4 @@ const  MinutaScreen=(props) =>{
     );
 }
 
-export default MinutaScreen;
+export default ProfessorEvaluationScreen;

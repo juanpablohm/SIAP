@@ -1,12 +1,13 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
-import {  Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
+import {  Box, Grid, InputAdornment, Paper, TextField, Tooltip, Typography} from "@mui/material";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DatePickerMUI from './DatePickerMUI';
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 
-const DinamicInput = ({values, model, setFunction, type, title}) => {
+const DinamicInput = ({values, model, setFunction, type, title, toolTips}) => {
 
     
     const handleChangeInputs = (id, name, newValue) => {
@@ -47,7 +48,7 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
 
     const getType = (type, value) => {
         if (type === "genObjetives" || type === "speObjetives" ) {
-            return (<Grid item md={10} lg={10}>
+            return (<Grid item  xs={10} md={10} lg={10}>
                         <TextField sx={{mb:2}}
                             name="description"
                             label={''}
@@ -93,9 +94,18 @@ const DinamicInput = ({values, model, setFunction, type, title}) => {
      
     return (       
           <Paper sx={{p:3}}>  
-                <Typography sx={{textAlign:'left', mb:2, fontSize: 15 }} color="text.secondary" >
-                                {title}
-                </Typography>  
+                <Typography  sx={{textAlign:'left', mb:2, fontSize: 15 }} color="text.secondary" >
+                                {title} 
+                    {toolTips != null ? ( <Tooltip  sx={{m:0, p:0, float: 'right'}} title={toolTips}>
+                        <IconButton>
+                            <HelpOutlineRoundedIcon />
+                        </IconButton>
+                    </Tooltip> ) : (<> </>)} 
+                        
+                </Typography> 
+
+               
+                
             {values instanceof Array? (    
                 values.map((value) => (                     
                     

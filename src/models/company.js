@@ -1,6 +1,9 @@
 
 export var Company = {
-    nit: "",
-    name: "",
-    legalNature: ""
+  nit: "",
+  name: "",
+  legalNature: "",
+  address: "",
+  phone: "",
+  contactName: ""
 };

@@ -1,5 +1,10 @@
 
 export var Professor = {
-    id : '', 
-    name : ''
+  name: "",
+  cedula: "",
+  lastName: "",
+  email: "",
+  cellPhone: "",
+  faculty: "",
+  program: ""
 };

@@ -1,26 +1,40 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, IconButton, Button, Alert} from "@mui/material";
-import { Link, useNavigate, useParams} from "react-router-dom";
+import { Grid, IconButton, Button, Alert, AlertTitle} from "@mui/material";
+import { Link, useNavigate} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import InternshipForm from '../components/InternshipForm';
+import {  Supervisor } from '../models/supervisor';
+import { Reports } from '../models/report';
+import { Products } from '../models/product';
+import {  Payment} from '../models/payment';
+import { Internship} from '../models/internship';
 import { useLocation } from "react-router-dom";
+import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
+import { createInternship } from '../api/internship/InternshipServices';
+import { createSupervisor } from '../api/supervisor/SupervisorServices';
 import AgreementForm  from '../components/AgreementForm';
 import { Agreement } from '../models/agreement';
-import { createAgreement } from '../api/agreement/AgreementService';
+import { Company } from '../models/company';
+import { Student } from '../models/student';
+import StudentForm from '../components/StudentForm';
+import { createStudent } from '../api/student/StudentService';
+import { Professor } from '../models/professor';
+import ProfessorForm from '../components/ProfessorForm';
+import { createProfessor } from '../api/professor/ProfessorServices';
 
-
-const CreateAgreementScreen=(props) =>{
+const CreateProfessorScreen=(props) =>{
 
     let navigate = useNavigate();
     const location = useLocation();
-    let { id } = useParams(); 
+    const [professor, setProfessor] = useState(Professor);
     const [error, setError] = useState(false);
     const [openConfirm, setOpenConfirm] = useState(false);
 
-    
     const handleOk = (tipo) => {
-        navigate('/convenios');
+        navigate('/docentes');
     };
 
     const handledSumit = async (data) =>{
@@ -28,24 +42,16 @@ const CreateAgreementScreen=(props) =>{
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
 
-            dataSend.CompanyId = id;
-
-            if(dataSend.term != "Fija"){
-                dataSend.extension = dataSend.term;
-            }
-
             console.log(dataSend);
 
-            let responseAgreement = await createAgreement(dataSend);  
+           let responseStudent = await createProfessor(dataSend);  
 
-            if(responseAgreement.ok){
+            if(responseStudent.ok){
                 setOpenConfirm(true);
             }else{
                 setError(true);
                 setOpenConfirm(true);  
-            }
-
-            
+            } 
 
         }catch(e){
             console.log(e);
@@ -56,7 +62,7 @@ const CreateAgreementScreen=(props) =>{
 
     const getDialogConfirmation = (error) => {
 
-        let texto = "Se ha creado el convenio exitosamente!";
+        let texto = "Se ha creado el docente exitosamente!";
         let tipo = "success"
 
         if(error){
@@ -77,14 +83,14 @@ const CreateAgreementScreen=(props) =>{
     return (
             <Grid container maxWidth="lg" sx={{mt:5, mb:5, mx:"auto"}}>
                 <Grid item xs={12} md={12} lg={12} sx={{ml:3}}>
-                        <Link to={"/convenios"} style={{ textDecoration: 'none'}}>
+                        <Link to={"/docentes"} style={{ textDecoration: 'none'}}>
                         <IconButton aria-label="delete" >
                                 <ChevronLeftIcon fontSize="large" />
                         </IconButton>
                         </Link>
                 </Grid>
 
-                <AgreementForm AgreementFormModel={Agreement} onSumitFunc={handledSumit} />
+                <ProfessorForm ProfessorFormModel={professor} onSumitFunc={handledSumit} />
                 
                 <Dialog
                     sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}
@@ -103,4 +109,4 @@ const CreateAgreementScreen=(props) =>{
     );
 }
 
-export default CreateAgreementScreen;
+export default CreateProfessorScreen;

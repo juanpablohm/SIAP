@@ -1,20 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { Grid, IconButton, Button, Alert} from "@mui/material";
-import { Link, useNavigate, useParams} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useLocation } from "react-router-dom";
 import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
-import AgreementForm  from '../components/AgreementForm';
-import { Agreement } from '../models/agreement';
-import { createAgreement } from '../api/agreement/AgreementService';
+import CompanyForm  from '../components/CompanyForm';
+import { Company } from '../models/company';
+import { createCompany } from '../api/company/CompanyServices';
 
 
-const CreateAgreementScreen=(props) =>{
+const CreateCompanyScreen=(props) =>{
 
     let navigate = useNavigate();
     const location = useLocation();
-    let { id } = useParams(); 
     const [error, setError] = useState(false);
     const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -28,24 +27,16 @@ const CreateAgreementScreen=(props) =>{
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
 
-            dataSend.CompanyId = id;
-
-            if(dataSend.term != "Fija"){
-                dataSend.extension = dataSend.term;
-            }
-
             console.log(dataSend);
 
-            let responseAgreement = await createAgreement(dataSend);  
+            let responseCompany = await createCompany(dataSend);  
 
-            if(responseAgreement.ok){
+            if(responseCompany.ok){
                 setOpenConfirm(true);
             }else{
                 setError(true);
                 setOpenConfirm(true);  
             }
-
-            
 
         }catch(e){
             console.log(e);
@@ -56,7 +47,7 @@ const CreateAgreementScreen=(props) =>{
 
     const getDialogConfirmation = (error) => {
 
-        let texto = "Se ha creado el convenio exitosamente!";
+        let texto = "Se ha creado la entidad exitosamente!";
         let tipo = "success"
 
         if(error){
@@ -84,7 +75,7 @@ const CreateAgreementScreen=(props) =>{
                         </Link>
                 </Grid>
 
-                <AgreementForm AgreementFormModel={Agreement} onSumitFunc={handledSumit} />
+                <CompanyForm CompanyFormModel={Company} onSumitFunc={handledSumit} onEdit={false} />
                 
                 <Dialog
                     sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}
@@ -103,4 +94,4 @@ const CreateAgreementScreen=(props) =>{
     );
 }
 
-export default CreateAgreementScreen;
+export default CreateCompanyScreen;

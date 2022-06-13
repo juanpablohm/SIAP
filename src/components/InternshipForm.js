@@ -1,6 +1,6 @@
 import React ,  { useState, useEffect } from 'react';
 import { Box } from "@mui/system";
-import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon, CircularProgress, Alert} from "@mui/material";
+import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon, CircularProgress, Alert, Tooltip} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Accordion, AccordionSummary, AccordionDetails } from './styles/IntershipFormStyles';
@@ -31,6 +31,7 @@ import { enumEPS } from '../models/student';
 import { enumType } from '../models/agreement';
 import { getAgreementById } from '../api/agreement/AgreementService';
 import { getProfessors } from '../api/professor/ProfessorServices';
+import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 
 var Agreement = {
   entity: 'Universidad de Caldas',
@@ -446,7 +447,8 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                      }} 
                                      setFunction={(values) => setData({ ...data, internship:{ ...data.internship, generalGoal: values}})}
                                      title={"Objetivos Generales"}
-                                     type={"genObjetives"}/>
+                                     toolTips={"Esto "}
+                                     type={"genObjetives"}/>                      
                                 </Grid> 
 
                                <Grid item xs={12} md={12} lg={12} >               

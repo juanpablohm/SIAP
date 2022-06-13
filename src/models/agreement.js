@@ -3,8 +3,8 @@ export var Agreement = {
     observations: "",
     name: "",
     supervisorName: "",
-    extension: "Automatica",
-    term: "",
+    extension: "",
+    term: "Fija",
     endDate: (new Date()).toISOString(),
     startDate: (new Date()).toISOString(),
     date: (new Date()).toISOString(),
@@ -17,8 +17,8 @@ export var Agreement = {
     petitioner: ""
 };
 
-export function enumType(eps){
-    switch (eps) {
+export function enumType(status){
+    switch (status) {
         case 1:
             return "Activo";
         default:

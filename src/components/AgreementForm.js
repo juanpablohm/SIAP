@@ -7,7 +7,7 @@ import { Accordion, AccordionSummary, AccordionDetails } from './styles/Intershi
 import DatePickerMUI from "./commons/DatePickerMUI";
 import SelectInput from '../components/commons/SelectInput';
 
-const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
+const AgreementForm=({AgreementFormModel, onSumitFunc, onEdit}) =>{
 
   const [data, setData] = useState(AgreementFormModel);
 
@@ -32,47 +32,30 @@ const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={4}>              
-                                <Grid item xs={12} md={12} lg={6} >
-                                    <TextField 
-                                      name="name" 
-                                      label="Nombre de la entidad"
-                                      value={data.company.name}
-                                      onChange={(event) => setData({ ...data, company:{ ...data.company, name: event.target.value }})}  
-                                      fullWidth/>
-                                </Grid>   
-
-                                <Grid item xs={12} md={12} lg={6} >
-                                    <TextField 
-                                      name="nit" 
-                                      label="Nit"
-                                      value={data.company.nit}
-                                      onChange={(event) => setData({ ...data, company:{ ...data.company, nit: event.target.value }})}  
-                                      fullWidth/>
-                                </Grid> 
-
-                                <Grid item xs={12} md={12} lg={4} >
+                               
+                                <Grid item xs={12} md={12} lg={12} >
                                     <TextField 
                                       name="secop" 
                                       label="SECOP"
-                                      value={data.agreement.secop}
-                                      onChange={(event) => setData({ ...data, agreement:{ ...data.agreement, secop: event.target.value }})}  
+                                      value={data.secop}
+                                      onChange={(event) => setData({ ...data,  secop: event.target.value })}  
                                       fullWidth/>
                                 </Grid> 
 
-                                <Grid item xs={12} md={12} lg={4} >
+                                <Grid item xs={12} md={12} lg={6} >
                                     <DatePickerMUI 
                                     name="initDateInternship"
                                     label="Fecha de inicio"
-                                    value={data.agreement.startDate} 
-                                    onChange={(newValue) => setData({ ...data, agreement:{ ...data.agreement, startDate: newValue.toISOString() }})}/>
+                                    value={data.startDate} 
+                                    onChange={(newValue) => setData({ ...data, startDate: newValue.toISOString() })}/>
                                 </Grid>
 
-                                <Grid item xs={12} md={12} lg={4} >
+                                <Grid item xs={12} md={12} lg={6} >
                                     <DatePickerMUI 
                                     name="endDateInternship"
                                     label="Fecha de terminación"
-                                    value={data.agreement.endDate} 
-                                    onChange={(newValue) => setData({ ...data, agreement:{ ...data.agreement, endDate: newValue.toISOString() }})}/>
+                                    value={data.endDate} 
+                                    onChange={(newValue) => setData({ ...data,  endDate: newValue.toISOString() })}/>
                                 </Grid>
 
                                 <Grid item xs={12} md={12} lg={12} >
@@ -82,8 +65,8 @@ const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
                                         multiline
                                         fullWidth
                                         rows={4}
-                                        value={data.agreement.object}
-                                        onChange={(event) => setData({ ...data, agreement:{ ...data.agreement, object: event.target.value }})}
+                                        value={data.object}
+                                        onChange={(event) => setData({ ...data,  object: event.target.value })}
                                     />
                                 </Grid>
 
@@ -103,34 +86,46 @@ const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
                                         value: 'Sin prorroga',
                                         label: 'Sin prorroga',
                                       }]} 
-                                    value={data.agreement.extension}
-                                    onChange={(event) => setData({ ...data, agreement:{ ...data.agreement,  extension: event.target.value }})} 
+                                    value={data.term}
+                                    onChange={(event) => setData({ ...data,  term: event.target.value })} 
                                     fullWidth/>
                               </Grid> 
 
+                             
+                              <Grid item xs={12} md={12} lg={6} >
+                                <SelectInput  
+                                  name="type" 
+                                  label="Tipo"
+                                  options={[{
+                                      value: 'Marco',
+                                      label: 'Marco',
+                                    },
+                                    {
+                                      value: 'Privado',
+                                      label: 'Privado',
+                                    },
+                                    {
+                                      value: 'Publico',
+                                      label: 'Publico',
+                                    }]}                   
+                                  value={data.type}
+                                  onChange={(event) => setData({ ...data,  type: event.target.value })} 
+                                  fullWidth/>
+                              </Grid> 
 
-                               <Grid item xs={12} md={12} lg={6} >
-                                  <SelectInput  
-                                    name="type" 
-                                    label="Tipo"
-                                    options={[{
-                                        value: 'Marco',
-                                        label: 'Marco',
-                                      },
-                                      {
-                                        value: 'Privado',
-                                        label: 'Privado',
-                                      },
-                                      {
-                                        value: 'Publico',
-                                        label: 'Publico',
-                                      }]}                   
-                                    value={data.agreement.type}
-                                    onChange={(event) => setData({ ...data, agreement:{ ...data.agreement,  type: event.target.value }})} 
+
+                              {data.term === "Fija" && (
+                                <Grid item xs={12} md={12} lg={12} >
+                                  <TextField 
+                                    name="secop" 
+                                    label="Descripción prorroga"
+                                    value={data.extension}
+                                    onChange={(event) => setData({ ...data,  extension: event.target.value })}  
                                     fullWidth/>
-                              </Grid>   
+                                </Grid> 
+                             )}  
                             </Grid>
-                     
+        
                         </AccordionDetails>
                       </Accordion> 
                                    
@@ -149,8 +144,8 @@ const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
                                         multiline
                                         fullWidth
                                         rows={4}
-                                        value={data.agreement.liquidation}
-                                        onChange={(event) => setData({ ...data, agreement:{ ...data.agreement, liquidation: event.target.value }})}
+                                        value={data.liquidation}
+                                        onChange={(event) => setData({ ...data, liquidation: event.target.value })}
                                     />
                                 </Grid>
 
@@ -161,33 +156,44 @@ const AgreementForm=({AgreementFormModel, internshipId,  onSumitFunc,}) =>{
                                         multiline
                                         fullWidth
                                         rows={4}
-                                        value={data.agreement.observations}
-                                        onChange={(event) => setData({ ...data, agreement:{ ...data.agreement, observations: event.target.value }})}
+                                        value={data.observations}
+                                        onChange={(event) => setData({ ...data, observations: event.target.value })}
                                     />
                                 </Grid>
+
+                                <Grid item xs={12} md={12} lg={12} >
+                                    <TextField 
+                                      name="petitiones" 
+                                      label="Nombre encargado del convenio"
+                                      value={data.petitioner}
+                                      onChange={(event) => setData({ ...data,  petitioner: event.target.value })}  
+                                      fullWidth/>
+                                </Grid> 
                                                                     
                             </Grid>
                      
                         </AccordionDetails>
                       </Accordion> 
 
-                      <Accordion >
-                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                          <Typography>Documentos (Certificado C.C.)</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={4}>                                
-                              <Grid item xs={12} md={12} lg={12} >   
-                                    <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=768"} ></iframe>                                                                         
-                              </Grid>                                                       
-                            </Grid>
-                     
-                        </AccordionDetails>
-                      </Accordion>                         
+                      {onEdit && (              
+                        <Accordion >
+                          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                            <Typography>Documentos anexos</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                              <Grid container spacing={4}>                                
+                                <Grid item xs={12} md={12} lg={12} >   
+                                      <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=768"} ></iframe>                                                                         
+                                </Grid>                                                       
+                              </Grid>
+                      
+                          </AccordionDetails>
+                        </Accordion>  
+                      )}                         
                     </Box>            
               </CardContent>    
 
-              <Button variant="contained" onClick={handledSumit} sx={{ mt:2, backgroundColor:"#000000", "&:hover":{backgroundColor:"#151515"}}}  size='large' fullWidth>Crear</Button>
+              <Button variant="contained" onClick={handledSumit} sx={{ mt:2, backgroundColor:"#000000", "&:hover":{backgroundColor:"#151515"}}}  size='large' fullWidth>Guardar</Button>
                   
             </Card>              
           </Grid>          

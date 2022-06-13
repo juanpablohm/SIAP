@@ -17,7 +17,7 @@ import Chip from '@mui/material/Chip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
-import { getStudents } from "../api/student/StudentService";
+import { deleteStudentById, getStudents } from "../api/student/StudentService";
 import { enumEPS } from '../models/student';
 
 
@@ -64,18 +64,24 @@ const StudentScreen = () => {
     };
 
     const handledEdit = (id) => {
-        navigate('/estudiante/editar/' + id);
+        navigate('/practicantes/editar/' + id);
     }
 
 
     const handledRemove = async (id) => {
        console.log("borrar" + id);
-      /*  try {
-        let internshipResponse = await deleteInternshipById(id); 
-        getInternshipsData();
+      try {
+        let internshipResponse = await deleteStudentById(id);
+        
+        if(internshipResponse != null){
+          getStudentsData();
+        }else{
+          setError(true);
+        }
+        
       }catch(e){
         setError(true);
-      } */
+      } 
     }
 
     const noStudents = ()=>{
@@ -125,7 +131,7 @@ const StudentScreen = () => {
                           />
                         </Grid>
                         <Grid item xs={4} lg={3} md={3}>
-                          <Link  style={{ textDecoration: 'none'}} to={"/convenios/nuevo"} >
+                          <Link  style={{ textDecoration: 'none'}} to={"/practicantes/nuevo"} >
                             <Button startIcon={<AddRoundedIcon  />} variant="contained" color='primary' size='medium' fullWidth>Nuevo Practicante</Button>
                           </Link> 
                         </Grid> 

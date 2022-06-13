@@ -57,15 +57,11 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
 
   const [data, setData] = useState(MinutaFormModel);
   
-  let url = "https://steelheart.tk/file-uploader/index.php?key=SIAP&id=564" ;
-
   const handledSumit = () =>{ 
-        onSumitFunc(data);
+      onSumitFunc(data);
   }
 
-  console.log(url);
- 
-    return (
+  return (
             <Grid item sx={{mt:1, mx:"auto"}} xs={10} md={9} lg={9}>
             <Card  elevation={15} >  
 
@@ -112,17 +108,17 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                                     <TextField 
                                       name="cdp" 
                                       label="Número de CDP"
-                                      value={""}
-                                      onChange={(event) => setData({  })}  
+                                      value={data.cdp}
+                                      onChange={(event) => setData({...data, cdp: event.target.value })}  
                                       fullWidth/>
                                 </Grid>   
 
                                  <Grid item xs={12} md={12} lg={6} >
                                     <TextField 
-                                      name="total" 
-                                      label="Total asignado"
-                                      value={""}
-                                      onChange={(event) => setData({ })}  
+                                      name="arl" 
+                                      label="Codigo contrato ARL"
+                                      value={data.arlCode}
+                                      onChange={(event) => setData({...data, arlCode: event.target.value })}  
                                       fullWidth/>
                                 </Grid> 
 
@@ -130,8 +126,8 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                                     <TextField 
                                       name="compromise" 
                                       label="Número compromiso presupuestal"
-                                      value={""}
-                                      onChange={(event) => setData({ })}  
+                                      value={data.budgetCommitment}
+                                      onChange={(event) => setData({...data, budgetCommitment: event.target.value  })}  
                                       fullWidth/>
                                 </Grid> 
 
@@ -151,10 +147,10 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                                           aria-labelledby="demo-row-radio-buttons-group-label"
                                           name="row-radio-buttons-group"
                                           value={data.period}
-                                          onChange={(event) => setData({ })}
+                                          onChange={(event) => setData({...data, period: event.target.value })}
                                         >
-                                          <FormControlLabel value="1" control={<Radio />} label="I" />
-                                          <FormControlLabel value="2" control={<Radio />} label="II" />
+                                          <FormControlLabel value="Primer Periodo" control={<Radio />} label="I" />
+                                          <FormControlLabel value="Segundo Periodo" control={<Radio />} label="II" />
                                     </RadioGroup>
                                 </Grid>                                
                             </Grid>
@@ -171,12 +167,12 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                                                            
                               <Grid item xs={12} md={12} lg={12} >               
                                   <DinamicInput 
-                                     values={data.notes}
+                                     values={data.observations}
                                      model={{
                                         description  : "",
                                         id: uuidv4()
                                      }} 
-                                     setFunction={(values) => setData({ ...data, notes:values})}
+                                     setFunction={(values) => setData({ ...data, observations:values})}
                                      title={"Notas"}
                                      type={"genObjetives"}/>
                                 </Grid> 
@@ -194,7 +190,7 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                         <AccordionDetails>
                             <Grid container spacing={4}>                                
                               <Grid item xs={12} md={12} lg={12} >   
-                                    <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={url} ></iframe>                                                                         
+                                    <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=" + data.id} ></iframe>                                                                         
                               </Grid>                                                       
                             </Grid>
                      

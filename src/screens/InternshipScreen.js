@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Alert, Button, ButtonGroup, CircularProgress, IconButton } from "@mui/material";
+import { Alert, Button, ButtonGroup, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { Grid, Box} from "@mui/material";
 import { Link, Navigate, useNavigate} from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
 import { getInternships, deleteInternshipById } from "../api/internship/InternshipServices";
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 const Internships = [{
     id : '123',
@@ -41,7 +42,7 @@ const Internships = [{
 
 const getIconState = (status) =>{
 
-  let state = { label:"Creada" , color:'default'}
+   let state = { label:"Creada" , color:'default'}
 
    switch (status) {
      case 1:
@@ -115,6 +116,10 @@ const InternshipScreen = () => {
           setInternships(filteredData);
       }
     };
+
+    const handledEvaluacion = (id) => {
+      navigate('/practicas/evaluacion/' + id);
+    }
 
     const handledEdit = (id) => {
         navigate('/practicas/editar/' + id);
@@ -222,10 +227,19 @@ const InternshipScreen = () => {
                                     <TableCell align="center">{internship.endDate.substring(0, internship.endDate.indexOf("T"))}</TableCell>
                                     <TableCell align="center">
                                       <ButtonGroup disableElevation variant="contained" aria-label="outlined primary button group">
-                                          <IconButton onClick={() => {handledEdit(internship.id)}}  aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
-                                          <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
-                                          <IconButton onClick={() => {handledMinuta(internship.id)}} aria-label="delete"  size="small" color="default"> <PlagiarismRoundedIcon /> </IconButton>
-                                      </ButtonGroup>
+                                        <Tooltip title="Editar practica">
+                                            <IconButton onClick={() => {handledEdit(internship.id)}}  aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
+                                          </Tooltip>
+                                          <Tooltip title="Borrar practica">
+                                            <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
+                                          </Tooltip>
+                                          <Tooltip title="Editar minuta">
+                                            <IconButton onClick={() => {handledMinuta(internship.id)}} aria-label="delete"  size="small" color="default"> <PlagiarismRoundedIcon /> </IconButton>    
+                                          </Tooltip>
+                                           <Tooltip title="Evaluación docente">
+                                            <IconButton onClick={() => {handledEvaluacion(internship.id)}} aria-label="delete"  size="small" color="default"> <AssignmentTurnedInIcon /> </IconButton>   
+                                          </Tooltip>
+                                          </ButtonGroup>
                                     </TableCell>
                                 </TableRow>
                             ))}

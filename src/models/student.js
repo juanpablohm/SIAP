@@ -2,21 +2,27 @@
 export var Student = {
     firstName : '',
     lastName: '',
-    documentId: '',
+    cedula: '',
     dateBirth: '2014-08-18T21:11:54',
-    cellphone: '',
+    phone: '',
     email: '',
-    eps: 'Sura',
-    university: '',
+    eps: '',
+    universityId: '',
     faculty: '',
     program: '',
-    code: '',
+    codigo: '',
 };
 
 export function enumEPS(eps){
     switch (eps) {
+        case 0:
+            return "Sura";
         case 1:
             return "Sanitas";
+        case 2:
+            return "Cafesalud";
+        case 3:
+            return "SaludTotal";
         default:
             return "Sin eps";
     }

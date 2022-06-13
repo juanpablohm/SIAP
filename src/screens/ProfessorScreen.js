@@ -17,7 +17,7 @@ import Chip from '@mui/material/Chip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
-import { getProfessors } from "../api/professor/ProfessorServices";
+import { deleteProfessorById, getProfessors } from "../api/professor/ProfessorServices";
 
 
 const ProfessorScreen = () => {
@@ -63,18 +63,24 @@ const ProfessorScreen = () => {
     };
 
     const handledEdit = (id) => {
-        navigate('/estudiante/editar/' + id);
+        navigate('/docente/editar/' + id);
     }
 
 
     const handledRemove = async (id) => {
        console.log("borrar" + id);
-      /*  try {
-        let internshipResponse = await deleteInternshipById(id); 
-        getInternshipsData();
+      try {
+        let professorResponse = await deleteProfessorById(id); 
+
+        if(professorResponse != null){
+           getProfessorsData();
+        }else{
+          setError(true);
+        }
+       
       }catch(e){
         setError(true);
-      } */
+      } 
     }
 
     const noProfessors = ()=>{
@@ -118,13 +124,13 @@ const ProfessorScreen = () => {
                   <Grid container sx={cardHeaderStyles.wrapper}>
                         <Grid item  xs={6} lg={9} md={9}>
                           <SearchBar 
-                              placeholder="Buscar por cedula, nombre, universidad "
+                              placeholder="Buscar por nombre, programa, correo "
                               onChange={(event) => handleSearch(event.target.value)}
                               searchBarWidth='300px'
                           />
                         </Grid>
                         <Grid item xs={4} lg={3} md={3}>
-                          <Link  style={{ textDecoration: 'none'}} to={"/convenios/nuevo"} >
+                          <Link  style={{ textDecoration: 'none'}} to={"/docentes/nuevo"} >
                             <Button startIcon={<AddRoundedIcon  />} variant="contained" color='primary' size='medium' fullWidth>Nuevo docente</Button>
                           </Link> 
                         </Grid> 

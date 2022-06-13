@@ -1,8 +1,35 @@
 import { RequiredArgumentError } from "../errors";
 
-const baseEndpoint = 'api/Professor/';
+const baseEndpoint = 'api/Company/';
 
-export async function getProfessors() {
+export async function getCompanyById(companyId) {
+
+    if (companyId == null) throw new RequiredArgumentError('id');
+
+    try{
+        let url = new URL(process.env.REACT_APP_API + baseEndpoint  + "GetCompanyById/");
+        url.searchParams.set('id', companyId);
+
+        let response = await fetch(url, {
+            'method': "GET",
+            'mode': 'cors',
+            'headers': {
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+
+        let company = await response.json(); 
+
+        return company;
+
+    }catch(err){
+       throw err;
+    }
+};
+
+
+export async function getCompanys() {
 
     try{
         let url = new URL(process.env.REACT_APP_API + baseEndpoint);
@@ -16,44 +43,18 @@ export async function getProfessors() {
             }
         })
 
-        let professors = await response.json(); 
+        let companys = await response.json(); 
 
-        return professors;
-
-    }catch(err){
-       throw err;
-    }
-};
-
-export async function getProfessorById(professorId) {
-
-    if (professorId == null) throw new RequiredArgumentError('id');
-
-    try{
-        let url = new URL(process.env.REACT_APP_API + baseEndpoint  + "GetProfessorById/");
-        url.searchParams.set('id', professorId);
-
-        let response = await fetch(url, {
-            'method': "GET",
-            'mode': 'cors',
-            'headers': {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
-
-        let professor = await response.json(); 
-
-        return professor;
+        return companys;
 
     }catch(err){
        throw err;
     }
-};
+}
 
-export async function createProfessor(newProfessor) {
+export async function createCompany(newCompany) {
 
-    if (newProfessor == null) throw new RequiredArgumentError('professor');
+    if (newCompany == null) throw new RequiredArgumentError('company');
 
     try{
         let url = new URL(process.env.REACT_APP_API + baseEndpoint);
@@ -64,7 +65,7 @@ export async function createProfessor(newProfessor) {
                 'Accept': 'application/json',
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify(newProfessor)
+            body: JSON.stringify(newCompany)
         })
 
         return response;
@@ -74,13 +75,13 @@ export async function createProfessor(newProfessor) {
     }
 };
 
-export async function deleteProfessorById(professorId) {
+export async function deleteCompanyById(companyId) {
 
-    if (professorId == null) throw new RequiredArgumentError('id');
+    if (companyId == null) throw new RequiredArgumentError('id');
 
     try{
     
-        let url = new URL(process.env.REACT_APP_API + baseEndpoint + professorId );
+        let url = new URL(process.env.REACT_APP_API + baseEndpoint + companyId );
 
         let response = await fetch(url, {
             'method': "DELETE",
@@ -91,19 +92,18 @@ export async function deleteProfessorById(professorId) {
             }
         })
 
-        let professor = await response.json(); 
+        let company = await response.json(); 
 
-        return professor;
+        return company;
 
     }catch(err){
        throw err;
     }
 };
 
+export async function updateCompany(newCompany) {
 
-export async function updateProfessor(newProfessor) {
-
-    if (newProfessor == null) throw new RequiredArgumentError('professor');
+    if (newCompany == null) throw new RequiredArgumentError('company');
 
     try{
         let url = new URL(process.env.REACT_APP_API + baseEndpoint);
@@ -114,12 +114,12 @@ export async function updateProfessor(newProfessor) {
                 'Accept': 'application/json',
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify(newProfessor)
+            body: JSON.stringify(newCompany)
         })
 
-        let professor = await response.json(); 
+        let company = await response.json(); 
 
-        return professor;
+        return company;
 
     }catch(err){
        throw err;

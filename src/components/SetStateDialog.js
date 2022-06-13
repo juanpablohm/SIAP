@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import AddTaskIcon from '@mui/icons-material/AddTask';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 
 const DialogSelect = ({handleSumit}) => {
@@ -39,7 +39,9 @@ const DialogSelect = ({handleSumit}) => {
 
   return (
     <>
-      <IconButton onClick={handleClickOpen} aria-label="delete" > <PublishedWithChangesRoundedIcon fontSize="large" color='primary' /></IconButton>
+      <Tooltip title="Cambiar estado practica">
+        <IconButton onClick={handleClickOpen} aria-label="delete" > <PublishedWithChangesRoundedIcon fontSize="large" color='primary' /></IconButton>
+      </Tooltip>
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Cambiar estado práctica</DialogTitle>
         <DialogContent>
