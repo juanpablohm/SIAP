@@ -68,6 +68,8 @@ export async function createStudent(newStudent) {
             body: JSON.stringify(newStudent)
         })
 
+        if (!response.ok) throw await response.json();
+
         return response;
 
     }catch(err){

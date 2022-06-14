@@ -26,7 +26,7 @@ import {v4 as uuidv4} from "uuid";
 
 const  MinutaScreen=(props) =>{
 
-    let [minuta, setMinuta] = useState(Minuta);
+    let [minuta, setMinuta] = useState(null);
     let navigate = useNavigate();
     let [internship, setInternship] = useState(null);
     let [student, setStudent] = useState(null);
@@ -62,7 +62,7 @@ const  MinutaScreen=(props) =>{
           let minutaResponse = await getMinutaById(minutaId); 
           
           let listNotes = [];
-          let notes = minutaResponse[0].observations.split(";");
+          let notes = minutaResponse.observations.split(";");
           
           notes.forEach((note) => {
             if(note != '')
@@ -73,11 +73,11 @@ const  MinutaScreen=(props) =>{
             listNotes.push({ description  : "  " , id: uuidv4() }) 
           }
              
-          minutaResponse[0].observations = listNotes;
+          minutaResponse.observations = listNotes;
 
           console.log(minutaResponse);
 
-          setMinuta(minutaResponse[0]);    
+          setMinuta(minutaResponse);    
         }catch(e){
            setError(true);
         }
@@ -88,7 +88,7 @@ const  MinutaScreen=(props) =>{
     }, []) 
 
     const handleOk = (tipo) => {
-        navigate('/practicas');
+        setOpenConfirm(false);  
     };
 
     const handledSumit = async (data) =>{
@@ -145,7 +145,7 @@ const  MinutaScreen=(props) =>{
           </Grid>
         );
       }
-    else if(internship == null || student == null || minuta == null) {
+    else if((internship === null) || (student === null) || (minuta === null)) {
         return ( 
           <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={9} lg={9}> 
                  <Typography

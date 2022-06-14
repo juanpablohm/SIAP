@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate} from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
 import SearchBar from "../components/commons/SearchBar";
 import { cardHeaderStyles } from './styles/cardHeaderStyles';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -40,39 +41,108 @@ const Internships = [{
   state: 'Aprobada'
 }];
 
-const getIconState = (status) =>{
+const isEvaluation = (status, type) =>{
+  if(type === 1){
+    if(status >= 6)
+        return true;
+  }
+  return false;
+};
+
+const isMinuta = (status, type, minutaId) => {
+  
+  if(minutaId != 0){
+
+    if(type === 1){
+        if(status >= 2)
+          return true;
+    }else{
+        if(status >= 1)
+          return true;
+    }
+
+  }
+  return false;
+
+};
+
+const getIconState = (status, type) =>{
 
    let state = { label:"Creada" , color:'default'}
 
-   switch (status) {
-     case 1:
-       state.label = "A. Docente";
-       state.color = "info";
-       break;
+   //1 practicas externas
+   //0 practicas internas
 
-     case 2:
-       state.label = "A. Comite";
-       state.color = "warning";
-       break;
+   if(type === 1){
 
-     case 3:
-        state.label = "A. Costos";
+    switch (status) {
+      case 1:
+        state.label = "A. Docente";
+        state.color = "info";
+        break;
+ 
+      case 2:
+        state.label = "A. Comite";
+        state.color = "warning";
+        break;
+ 
+      case 3:
+         state.label = "A. Administrativo";
+         state.color = "secondary";
+         break;
+ 
+      case 4:
+           state.label = "A. C. Practicas";
+           state.color = "primary"
+           break;
+ 
+      case 5:
+         state.label = "En curso";
+         state.color = "success";
+         break;
+
+      case 5:
+          state.label = "Terminada";
+          state.color = "error";
+          break;
+ 
+      default:
+        break;
+    }
+
+   }else{
+      
+    switch (status) {
+      case 1:
+        state.label = "A. Administrativo";
         state.color = "secondary";
         break;
-
-     case 4:
-          state.label = "En curso";
-          state.color = "success";
-          break;
-
-     case 5:
-        state.label = "Terminada";
-        state.color = "error";
+ 
+      case 2:
+        state.label = "A. C. Practicas";
+        state.color = "primary";
         break;
+ 
+      case 3:
+         state.label = "A. Costos";
+         state.color = "info";
+         break;
+ 
+      case 4:
+           state.label = "En curso";
+           state.color = "success";
+           break;
+ 
+      case 5:
+         state.label = "Terminada";
+         state.color = "error";
+         break;
+ 
+      default:
+        break;
+    }
 
-     default:
-       break;
-   }
+  }
 
    return(<Chip sx={{width:'100%'}}  label={state.label} color={state.color}/>)
 }
@@ -217,7 +287,7 @@ const InternshipScreen = () => {
                                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align="center" component="th" scope="row">
-                                      {getIconState(internship.status)}
+                                      {getIconState(internship.status, internship.type)}
                                     </TableCell>
                                     <TableCell align="center">{internship.studentName}</TableCell>
                                     <TableCell align="center">{internship.professorName}</TableCell>
@@ -230,14 +300,21 @@ const InternshipScreen = () => {
                                         <Tooltip title="Editar practica">
                                             <IconButton onClick={() => {handledEdit(internship.id)}}  aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
                                           </Tooltip>
+                                                                  
+                                          {isMinuta(internship.status, internship.type, internship.minutaId) && (
+                                            <Tooltip title="Editar minuta">
+                                              <IconButton onClick={() => {handledMinuta(internship.id)}} aria-label="delete"  size="small" color="default"> <PlagiarismRoundedIcon /> </IconButton>    
+                                            </Tooltip>
+                                          )}
+
+                                          {isEvaluation(internship.status, internship.type) && (
+                                            <Tooltip title="Evaluación docente">
+                                                <IconButton onClick={() => {handledEvaluacion(internship.id)}} aria-label="delete"  size="small" color="default"> <AssignmentTurnedInIcon /> </IconButton>   
+                                            </Tooltip>
+                                          )}
+
                                           <Tooltip title="Borrar practica">
                                             <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
-                                          </Tooltip>
-                                          <Tooltip title="Editar minuta">
-                                            <IconButton onClick={() => {handledMinuta(internship.id)}} aria-label="delete"  size="small" color="default"> <PlagiarismRoundedIcon /> </IconButton>    
-                                          </Tooltip>
-                                           <Tooltip title="Evaluación docente">
-                                            <IconButton onClick={() => {handledEvaluacion(internship.id)}} aria-label="delete"  size="small" color="default"> <AssignmentTurnedInIcon /> </IconButton>   
                                           </Tooltip>
                                           </ButtonGroup>
                                     </TableCell>

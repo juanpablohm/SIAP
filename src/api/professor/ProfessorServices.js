@@ -67,6 +67,8 @@ export async function createProfessor(newProfessor) {
             body: JSON.stringify(newProfessor)
         })
 
+        if (!response.ok) throw await response.json();
+
         return response;
 
     }catch(err){

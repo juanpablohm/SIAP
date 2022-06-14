@@ -281,8 +281,8 @@ const CompanyScreen = () => {
                                 <TableCell />
                                 <TableCell  sx={{color:'white'}} align="center" >Nombre</TableCell>
                                 <TableCell  sx={{color:'white'}} align="center">NIT</TableCell>
-                                <TableCell  sx={{color:'white'}} align="center">Telefono</TableCell>
                                 <TableCell  sx={{color:'white'}} align="center">Dirección</TableCell>
+                                <TableCell  sx={{color:'white'}} align="center">Telefono</TableCell>
                                 <TableCell  sx={{color:'white'}} align="center">Responsable</TableCell>
                                 <TableCell align="center"></TableCell>
                                 </TableRow>

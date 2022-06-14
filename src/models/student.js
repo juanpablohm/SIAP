@@ -11,6 +11,7 @@ export var Student = {
     faculty: '',
     program: '',
     codigo: '',
+    type: '0',
 };
 
 export function enumEPS(eps){

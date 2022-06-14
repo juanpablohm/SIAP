@@ -61,6 +61,7 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
       onSumitFunc(data);
   }
 
+
   return (
             <Grid item sx={{mt:1, mx:"auto"}} xs={10} md={9} lg={9}>
             <Card  elevation={15} >  
@@ -80,9 +81,9 @@ const  MinutaForm=({MinutaFormModel, Internship, Student,  onSumitFunc,}) =>{
                                     <CardHeader
                                       avatar={<AssignmentRoundedIcon fontSize="large"/>} 
                                       action={
-                                        <IconButton aria-label="settings">
-                                          <LaunchRoundedIcon />
-                                        </IconButton>
+                                        <a target="_blank" href={"https://steelheart.tk/pdf-generator/index.php?key=SIAP&doc=practica&id=" + Internship.id}>
+                                        <IconButton aria-label="delete" > <LaunchRoundedIcon /> </IconButton>
+                                        </a>                               
                                       }                      
                                       title={Internship.studentName + "(C.C." + Internship.studentCédula +") - " +  Internship.companyName }
                                       subheader={Student.universityName +" - " + Student.program }

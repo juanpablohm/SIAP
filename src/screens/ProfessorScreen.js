@@ -146,6 +146,7 @@ const ProfessorScreen = () => {
                             <TableRow >
                               <TableCell sx={{color:'white'}} align="center">Nombre</TableCell>
                               <TableCell sx={{color:'white'}} align="center">Email</TableCell>
+                              <TableCell sx={{color:'white'}} align="center">Documento</TableCell>
                               <TableCell sx={{color:'white'}} align="center">Programa</TableCell>
                               <TableCell sx={{color:'white'}} align="center">N° Practicas</TableCell>
 
@@ -161,6 +162,7 @@ const ProfessorScreen = () => {
                                    
                                     <TableCell align="center">{professor.name + " " + professor.lastName}</TableCell>
                                     <TableCell align="center">{professor.email}</TableCell>
+                                    <TableCell align="center">{professor.cedula}</TableCell>
                                     <TableCell align="center">{professor.program}</TableCell>
                                     <TableCell align="center">{professor.internships.length}</TableCell>
 

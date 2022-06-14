@@ -27,43 +27,54 @@ const CreateStudentScreen=(props) =>{
     let navigate = useNavigate();
     const location = useLocation();
     const [student, setStudent] = useState(Student);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState({on: false, message:""});
     const [openConfirm, setOpenConfirm] = useState(false);
 
     const handleOk = (tipo) => {
-        navigate('/practicantes');
+        if(tipo === "success"){
+            navigate('/practicantes');
+        }else if(tipo === "error"){
+            setOpenConfirm(false); 
+        }
     };
 
     const handledSumit = async (data) =>{
  
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
-
+   
             console.log(dataSend);
+
+            if(dataSend.universityId != 2){
+                dataSend.type = 1;
+            }else{
+                dataSend.type = 0;
+            }
 
             let responseStudent = await createStudent(dataSend);  
 
             if(responseStudent.ok){
+                setError({on: false, message:""});
                 setOpenConfirm(true);
-            }else{
-                setError(true);
-                setOpenConfirm(true);  
             }
 
         }catch(e){
-            console.log(e);
-            setError(true);
+            console.log(e)
+            setError({on: true, message:e});
             setOpenConfirm(true);  
         }    
     }
 
-    const getDialogConfirmation = (error) => {
+    const getDialogConfirmation = (isError) => {
 
         let texto = "Se ha creado el practicante exitosamente!";
         let tipo = "success"
 
-        if(error){
+        if(isError){
+
             texto = "Ha ocurrido un error, intentelo más tarde!";
+            if(error.message === "Cedula Duplicada")
+                texto = "Ya existe un estudiante con esa cedula";                      
             tipo  = "error";
         }
 
@@ -95,7 +106,7 @@ const CreateStudentScreen=(props) =>{
                     keepMounted
                     open={openConfirm}>
                     <DialogContent>
-                        {error ? (
+                        {error.on ? (
                                 getDialogConfirmation(true)
                         ) : (
                                 getDialogConfirmation(false)

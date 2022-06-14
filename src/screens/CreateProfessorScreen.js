@@ -30,11 +30,17 @@ const CreateProfessorScreen=(props) =>{
     let navigate = useNavigate();
     const location = useLocation();
     const [professor, setProfessor] = useState(Professor);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState({on: false, message:""});
     const [openConfirm, setOpenConfirm] = useState(false);
 
     const handleOk = (tipo) => {
-        navigate('/docentes');
+
+        if(tipo === "success"){
+            navigate('/docentes');
+        }else if(tipo === "error"){
+            setOpenConfirm(false); 
+        }
+        
     };
 
     const handledSumit = async (data) =>{
@@ -44,29 +50,36 @@ const CreateProfessorScreen=(props) =>{
 
             console.log(dataSend);
 
-           let responseStudent = await createProfessor(dataSend);  
-
-            if(responseStudent.ok){
-                setOpenConfirm(true);
-            }else{
-                setError(true);
-                setOpenConfirm(true);  
-            } 
+           let responseProfessor = await createProfessor(dataSend); 
+           
+            if(responseProfessor.ok){
+                setError({on: false, message:""});
+                setOpenConfirm(true);      
+            }
 
         }catch(e){
-            console.log(e);
-            setError(true);
+            
+            setError({on: true, message:e});
+            console.log(error)
             setOpenConfirm(true);  
         }    
     }
 
-    const getDialogConfirmation = (error) => {
+    const getDialogConfirmation = (isError) => {
 
         let texto = "Se ha creado el docente exitosamente!";
         let tipo = "success"
+   
 
-        if(error){
-            texto = "Ha ocurrido un error, intentelo más tarde!";
+        if(isError){
+            
+            if(error.message === "Cedula Duplicada"){
+                
+                texto = "Ya existe un profesor con esta cedula";
+            }
+            else{
+                texto = "Ha ocurrido un error, intentelo más tarde!";
+            }
             tipo  = "error";
         }
 
@@ -98,7 +111,7 @@ const CreateProfessorScreen=(props) =>{
                     keepMounted
                     open={openConfirm}>
                     <DialogContent>
-                        {error ? (
+                        {error.on ? (
                                 getDialogConfirmation(true)
                         ) : (
                                 getDialogConfirmation(false)

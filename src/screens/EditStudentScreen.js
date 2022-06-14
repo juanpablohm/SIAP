@@ -32,7 +32,7 @@ const EditStudentScreen=(props) =>{
     let { id } = useParams(); 
 
     const handleOk = (tipo) => {
-        navigate('/practicantes');
+        setOpenConfirm(false);
     };
 
     const getStudent = async () => { 
@@ -55,9 +55,14 @@ const EditStudentScreen=(props) =>{
 
             console.log(dataSend);
 
+            if(dataSend.universityId != 2){
+                dataSend.type = "1";
+            }else{
+                dataSend.type = "0";
+            }
+
             let responseStudent = await updateStudent(dataSend);  
 
-            console.log(responseStudent);
             if(responseStudent != null){
                 setOpenConfirm(true);
             }else{

@@ -34,7 +34,7 @@ const EditProfessorScreen=(props) =>{
     let { id } = useParams(); 
 
     const handleOk = (tipo) => {
-        navigate('/docentes');
+        setOpenConfirm(false);  
     };
 
     const getProfessorData = async () => { 
