@@ -14,9 +14,9 @@ import AddTaskIcon from '@mui/icons-material/AddTask';
 import { IconButton, Tooltip } from '@mui/material';
 import PublishedWithChangesRoundedIcon from '@mui/icons-material/PublishedWithChangesRounded';
 
-const DialogSelect = ({handleSumit}) => {
+const DialogSelect = ({handleSumit, type}) => {
   const [open, setOpen] = React.useState(false);
-  const [status, setStatus] = React.useState('2');
+  const [status, setStatus] = React.useState('1');
 
   const handleChange = (event) => {
     setStatus(Number(event.target.value) || '');
@@ -45,7 +45,7 @@ const DialogSelect = ({handleSumit}) => {
       <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         <DialogTitle>Cambiar estado práctica</DialogTitle>
         <DialogContent>
-          <Box component="form" sx={{p:1, display: 'flex', flexWrap: 'wrap' }}>
+          <Box component="form" sx={{p:3, display: 'flex', flexWrap: 'wrap' }}>
             <FormControl fullWidth >
               <InputLabel htmlFor="demo-dialog-native">Estado</InputLabel>
               <Select
@@ -54,10 +54,24 @@ const DialogSelect = ({handleSumit}) => {
                 onChange={handleChange}
                 input={<OutlinedInput label="Estado" id="demo-dialog-native" />}
               >
-                <option value={1}>Aprobada Docente</option>
-                <option value={2}>Aprobada Comite C.</option>
-                <option value={3}>Aprobada C. Costos</option>
-                <option value={4}>Rechazada</option>
+                {type === 0 ? (
+                  <>
+                  <option value={1}>Aprobada Administrativo</option>
+                  <option value={2}>Aprobada C. Practicas</option>
+                  <option value={3}>Aprobada C. Costos</option>
+                  <option value={4}>En curso</option>
+                  <option value={5}>Terminada</option>
+                  </>
+                ) : (
+                  <>
+                  <option value={1}>Aprobada Docente</option>
+                  <option value={2}>Aprobada C. Curriculum</option>
+                  <option value={3}>Aprobada Administrativo</option>
+                  <option value={4}>Aprobada C. Practicas</option>
+                  <option value={5}>En curso</option>
+                  <option value={6}>Terminada</option>
+                  </>
+                )}
               </Select>
             </FormControl>          
           </Box>

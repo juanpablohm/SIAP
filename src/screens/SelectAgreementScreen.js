@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import { Alert, Button, CircularProgress, IconButton, tooltipClasses } from "@mui/material";
 import { Grid} from "@mui/material";
-import { Link} from "react-router-dom";
+import { Link, useLocation, useParams} from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -18,6 +18,8 @@ const SelectAgreementScreen = () => {
     const [agreements, setAgreements] = useState(null);
     const [agreement, setAgreement] = useState(null);
     const [error, setError] = useState(false);
+    const location = useLocation();
+    let { id } = useParams(); 
 
     const getAgreementsData = async () => { 
       try {
@@ -94,7 +96,7 @@ const SelectAgreementScreen = () => {
           <Grid item xs={2} md={2} lg={2}></Grid>
 
           <Grid item xs={6} md={6} lg={4} sx={{mt:2 , p:3, mx:"auto"}}>
-                  <Link  style={{ textDecoration: 'none'}} to={ agreement == null ? "": "/practicas/nueva"} state={{ agreement: agreement}}>
+                  <Link  style={{ textDecoration: 'none'}} to={ agreement == null ? "": "/practicas/nueva"} state={{ agreement: agreement, idStudent: id}}>
                     <Button variant="contained" disabled={ agreement == null ? true: false } color='primary' size='large' fullWidth>Continuar</Button>
                   </Link>    
           </Grid> 

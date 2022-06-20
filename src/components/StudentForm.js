@@ -115,6 +115,7 @@ const StudentForm=({StudentFormModel, onSumitFunc}) =>{
                                   fullWidth/>
                               </Grid>
 
+                              
                               <Grid item xs={12} md={12} lg={6} >
                                 <SelectInput  
                                   name="facultyStudent" 
@@ -133,7 +134,8 @@ const StudentForm=({StudentFormModel, onSumitFunc}) =>{
                                   value={data.program}
                                   onChange={(event) => setData({ ...data, program: event.target.value })} 
                                   fullWidth/>
-                              </Grid>  
+                              </Grid> 
+                              
                     
                     </Grid>
                                              

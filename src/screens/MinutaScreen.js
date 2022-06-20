@@ -60,22 +60,37 @@ const  MinutaScreen=(props) =>{
     const getMinuta = async (minutaId) => { 
         try {
           let minutaResponse = await getMinutaById(minutaId); 
-          
-          let listNotes = [];
-          let notes = minutaResponse.observations.split(";");
-          
-          notes.forEach((note) => {
-            if(note != '')
-             listNotes.push({ description  : note , id: uuidv4() }) 
-          });
 
-          if(listNotes.length === 0){
-            listNotes.push({ description  : "  " , id: uuidv4() }) 
-          }
+            try{
+                let listNotes = [];
+                
+                if(minutaResponse.observations  != null){
+
+                   
+                    let notes = minutaResponse.observations.split(";");
+    
+                    notes.forEach((note) => {
+                        if(note != '')
+                            listNotes.push({ description  : note , id: uuidv4() }) 
+                    });
+
+                    if(listNotes.length === 0){
+                        listNotes.push({ description  : "  " , id: uuidv4() }) 
+                    }
+
+                }else{
+                    listNotes.push({ description  : "  " , id: uuidv4() }) 
+                }
+               
+                minutaResponse.observations = listNotes;
+            }catch{
+
+            }
              
-          minutaResponse.observations = listNotes;
+          
 
           console.log(minutaResponse);
+          console.log("minutaa")
 
           setMinuta(minutaResponse);    
         }catch(e){
@@ -182,7 +197,7 @@ const  MinutaScreen=(props) =>{
                 </Tooltip>
 
                 <Tooltip title="Descargar documento minuta">
-                    <a target="_blank" href={"https://steelheart.tk/pdf-generator/index.php?key=SIAP&doc=minuta&id=" + internship.minutaId}>
+                    <a target="_blank" href={"https://steelheart.tk/pdf-generator/index.php?key=SIAP&doc=minuta&id=" + internship.minutaId }>
                         <IconButton aria-label="delete" > <DownloadForOfflineRoundedIcon  fontSize="large" color='primary'/> </IconButton>
                     </a>
                 </Tooltip>

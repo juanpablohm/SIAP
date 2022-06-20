@@ -18,6 +18,7 @@ import Icon from '@mui/material/Icon';
 import {navigationItems} from "../config";
 import {  Link, useLocation } from "react-router-dom";
 import { Drawer, AppBar, mdTheme } from "./styles/HomeStyles";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 
 const HomeScreen = () => {
@@ -41,7 +42,8 @@ const HomeScreen = () => {
                             backgroundColor: "#003B70"
                             }}
                         >
-                            {location.pathname !== "/evaluacion" && (
+                            
+                            {!location.pathname.includes("supervisor/evaluacion") && (                            
                                 <IconButton
                                     edge="start"
                                     color="inherit"
@@ -54,6 +56,7 @@ const HomeScreen = () => {
                                 >
                                     <MenuIcon />
                                 </IconButton>
+                               
                             )}
                             <Typography
                                 component="h1"
@@ -64,17 +67,17 @@ const HomeScreen = () => {
                                 >
                             SIAP
                             </Typography>
-                            {location.pathname !== "/evaluacion" && (
+                            {!location.pathname.includes("supervisor/evaluacion") && (
                                 <IconButton color="inherit">
-                                <Badge badgeContent={1} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
+                                
+                                    <SettingsIcon />
+                               
                                 </IconButton>
                             )}
                         </Toolbar>
                     </AppBar>
 
-                    {location.pathname !== "/evaluacion" && (
+                    {!location.pathname.includes("supervisor/evaluacion")  && (
                         <Drawer variant="permanent" open={open}>
                             <Toolbar
                                 sx={{

@@ -20,6 +20,7 @@ import CompanyScreen from "./screens/CompanyScreens";
 import CreateCompanyScreen from "./screens/CreateCompanyScreen";
 import EditCompanyScreen from "./screens/EditCompanyScreen";
 import EditAgreementScreen from "./screens/EditAgreementScreen";
+import SupervisorEvaluationScreen from "./screens/SupervisorEvaluationScreen";
 
 const MainRoutes = () => (
 
@@ -30,7 +31,7 @@ const MainRoutes = () => (
 			<Route path="/" element={<InnerContent/>}>
 				<Route path="/" element={<Navigate replace to="practicas" />} /> 
 				<Route  path="practicas" element={<InternshipScreen />} />
-				<Route  path="practicas/convenio" element={<SelectAgreementScreen />} />
+				<Route  path="practicas/convenio/:id" element={<SelectAgreementScreen />} />
 				<Route path="practicas/nueva" element={<CreateInternshipScreen /> } />	
 				<Route path="practicas/editar/:id" element={<EditInternshipScreen /> } />
 				<Route path="practicas/evaluacion/:id" element={<ProfessorEvaluationScreen/> } />
@@ -48,7 +49,7 @@ const MainRoutes = () => (
 				<Route path="docente/editar/:id" element={<EditProfessorScreen />} /> 
 			</Route>
 
-			<Route path="evaluacion/:id" element={<SupervisorEvaluationForm />} /> 
+			<Route path="supervisor/evaluacion/:id" element={<SupervisorEvaluationScreen />} /> 
 			
 		</Routes>
 

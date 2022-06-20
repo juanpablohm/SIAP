@@ -20,6 +20,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
 import { getInternships, deleteInternshipById } from "../api/internship/InternshipServices";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import { deleteSupervisorById } from "../api/supervisor/SupervisorServices";
 
 const Internships = [{
     id : '123',
@@ -42,11 +43,12 @@ const Internships = [{
 }];
 
 const isEvaluation = (status, type) =>{
-  if(type === 1){
+  /* if(type === 1){
     if(status >= 6)
         return true;
   }
-  return false;
+  return false; */
+  return true;
 };
 
 const isMinuta = (status, type, minutaId) => {
@@ -199,9 +201,10 @@ const InternshipScreen = () => {
       navigate('/practicas/minuta/' + id);
   }
 
-    const handledRemove = async (id) => {
+    const handledRemove = async (id, idSupervisor) => {
        try {     
         let internshipResponse = await deleteInternshipById(id); 
+        let supervisorResponse  = await deleteSupervisorById(idSupervisor);
         getInternshipsData();
       }catch(e){
         console.log(e);
@@ -256,7 +259,7 @@ const InternshipScreen = () => {
                           />
                         </Grid>
                         <Grid item xs={4} lg={3} md={3}>
-                          <Link  style={{ textDecoration: 'none'}} to={"/practicas/convenio"} >
+                          <Link  style={{ textDecoration: 'none'}} to={"/practicas/convenio/" + 1} >
                             <Button startIcon={<AddRoundedIcon  />} variant="contained" color='primary' size='medium' fullWidth>Nueva Practica</Button>
                           </Link> 
                         </Grid> 
@@ -314,7 +317,7 @@ const InternshipScreen = () => {
                                           )}
 
                                           <Tooltip title="Borrar practica">
-                                            <IconButton onClick={() => {handledRemove(internship.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
+                                            <IconButton onClick={() => {handledRemove(internship.id, internship.supervisorId)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>
                                           </Tooltip>
                                           </ButtonGroup>
                                     </TableCell>

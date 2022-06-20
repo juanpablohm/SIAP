@@ -1,6 +1,6 @@
 import React ,  { useState, useEffect } from 'react';
 import { Box } from "@mui/system";
-import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon, CircularProgress, Alert, Tooltip} from "@mui/material";
+import { Grid, Divider,  Button, Card,  TextField, Paper, Avatar, CardHeader, IconButton, ListItemIcon, CircularProgress, Alert, Tooltip, InputAdornment} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Accordion, AccordionSummary, AccordionDetails } from './styles/IntershipFormStyles';
@@ -114,6 +114,14 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
   const handledSumit = () =>{ 
     data.internship.agreementId = agreementId; 
     data.internship.studentId = studentId;
+
+    console.log(student);
+
+    if(student.type === "0"){
+      data.internship.type = "1";
+    }else{
+      data.internship.type = "0";
+    }
     onSumitFunc(data);
   }
 
@@ -211,11 +219,7 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                       avatar={
                                         <BusinessRoundedIcon fontSize="large" />
                                       }
-                                      action={
-                                        <IconButton aria-label="settings">
-                                          <VisibilityRoundedIcon />
-                                        </IconButton>
-                                      }
+                                    
                                       title={agreement.companyName}
                                       subheader={agreement.companyNit + " " + enumType(agreement.status)}
                                     />
@@ -292,7 +296,16 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                 label="Dependencia donde desarrolla la práctica"
                                 value={data.internship.dependency}
                                 onChange={(event) => setData({ ...data, internship:{ ...data.internship,  dependency: event.target.value }})}     
-                                fullWidth/>
+                                fullWidth
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                        <Tooltip  sx={{m:0, p:0, float: 'right'}} title={"La dependencia hace referencia al departamento, unidad en la empresa a la que va a estar asociado el practicante. Ej: Sistemas, Marketing"}>
+                                          <HelpOutlineRoundedIcon />
+                                        </Tooltip> 
+                                    </InputAdornment>
+                                  ),
+                                }}/>
                               </Grid>
 
                               <Grid item xs={12} md={12} lg={6} >
@@ -438,8 +451,27 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={4}>              
-                                <Grid item xs={12} md={12} lg={12} >               
-                                  <DinamicInput 
+                                <Grid item xs={12} md={12} lg={12} >  
+
+                                  <TextField
+                                    id="outlined-multiline-flexible"
+                                    label="Objetivo general"
+                                    multiline
+                                    fullWidth
+                                    rows={2}
+                                    InputProps={{
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                            <Tooltip  sx={{m:0, p:0, float: 'right'}} title={"El objetivo general hace referencia a la actividad, meta o fin principal que tiene la practica, este engloba las tareas que va a realizar el practicante"}>
+                                              <HelpOutlineRoundedIcon />
+                                            </Tooltip> 
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                    value={data.internship.generalGoal}
+                                    onChange={(event) => setData({ ...data, internship:{ ...data.internship, generalGoal: event.target.value}})}
+                                  />             
+                                  {/* <DinamicInput 
                                      values={data.internship.generalGoal}
                                      model={{
                                         description  : "",
@@ -448,8 +480,10 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                      setFunction={(values) => setData({ ...data, internship:{ ...data.internship, generalGoal: values}})}
                                      title={"Objetivos Generales"}
                                      toolTips={"Esto "}
-                                     type={"genObjetives"}/>                      
-                                </Grid> 
+                                     type={"genObjetives"}/> */}                      
+                                </Grid>
+
+                                
 
                                <Grid item xs={12} md={12} lg={12} >               
                                   <DinamicInput 
@@ -458,6 +492,7 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                         description  : "",
                                         id: uuidv4()
                                      }} 
+                                     toolTips={"Los objetivos especificos hacen referencia a tareas, actividades o funciones concretas que va a realizar el practicante en la empresa, estos objetivos permitiran conseguir el objetivo general."}
                                      setFunction={(values) => setData({ ...data, internship:{ ...data.internship, specificGoals: values}})}
                                      title={"Objetivos Especificos"}
                                      type={"speObjetives"}/>
@@ -471,6 +506,7 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                         date : (new Date()).toISOString(),
                                         id: uuidv4()
                                      }} 
+                                     toolTips={"Los productos esperados hacen referencia a los resultados, articulos o cualquier tipo de producción entregable que da como resultado el desarrollo de la practica."}
                                      setFunction={(values) => setData({ ...data, products:values})}
                                      title={"Productos esperados"}
                                      type={"products"}/>
@@ -487,7 +523,8 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                      }} 
                                      setFunction={(values) => setData({ ...data, reports:values})}
                                      title={"Informes"}
-                                     type={"delivery"}/>
+                                     type={"delivery"}
+                                     toolTips={"Los informes hace referencia a tiempos de entrega o revision de la practica, donde el practicante da muestras de lo que ha realizado."}/>
                                 </Grid>                                 
                             </Grid>
                         </AccordionDetails>
@@ -511,7 +548,8 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                      }} 
                                      setFunction={(values) => setData({ ...data,  payment:{ ...data.payment, fees:values}})}
                                      title={"Pagos"}
-                                     type={"pay"}/>
+                                     type={"pay"}
+                                     toolTips={"Este campo es opcional para practicas externas."}/>
                                 </Grid>                            
                             </Grid>
                      
@@ -527,7 +565,7 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                           <AccordionDetails>
                               <Grid container spacing={4}>                                        
                                 <Grid item xs={12} md={12} lg={12} >   
-                                    <iframe  frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id="+ data.internship.id}  ></iframe>                                                                            
+                                    <iframe  frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=Practica"+ data.internship.id}  ></iframe>                                                                            
                                 </Grid>                                                         
                               </Grid>                 
                           </AccordionDetails>

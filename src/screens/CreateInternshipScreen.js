@@ -41,13 +41,11 @@ const  CreateInternshipScreen=(props) =>{
  
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
-
-            let generalGoal = "";
+           
             let specificGoals = "";     
-
-            dataSend.internship.generalGoal.map((obj) => (generalGoal += obj.description + ";" ));
+         
             dataSend.internship.specificGoals.map((obj) => (specificGoals += obj.description + ";" ));
-            dataSend.internship.generalGoal = generalGoal;
+           
             dataSend.internship.specificGoals = specificGoals;
            
             dataSend.reports.map((obj) => (delete obj['id']));
@@ -101,7 +99,7 @@ const  CreateInternshipScreen=(props) =>{
     return (
             <Grid container maxWidth="lg" sx={{mt:5, mb:5, mx:"auto"}}>
                 <Grid item xs={12} md={12} lg={12} sx={{ml:3}}>
-                        <Link to={"/practicas/convenio"} style={{ textDecoration: 'none'}}>
+                        <Link to={"/practicas/convenio/" + location.state.idStudent.toString()} style={{ textDecoration: 'none'}}>
                         <IconButton aria-label="delete" >
                                 <ChevronLeftIcon fontSize="large" />
                         </IconButton>
@@ -109,7 +107,7 @@ const  CreateInternshipScreen=(props) =>{
                 </Grid>
 
         
-                <InternshipForm InternshipFormModel={InternshipFormModel} studentId={"3"} agreementId={location.state.agreement.id.toString()} onSumitFunc={handledSumit} labelBtn={"Crear"} />
+                <InternshipForm InternshipFormModel={InternshipFormModel} studentId={location.state.idStudent.toString()} agreementId={location.state.agreement.id.toString()} onSumitFunc={handledSumit} labelBtn={"Crear"} />
               
                 <Dialog
                     sx={{m:0, '& .MuiDialog-paper': { width: '80%' } }}

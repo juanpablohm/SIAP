@@ -183,7 +183,7 @@ const AgreementForm=({AgreementFormModel, onSumitFunc, onEdit}) =>{
                           <AccordionDetails>
                               <Grid container spacing={4}>                                
                                 <Grid item xs={12} md={12} lg={12} >   
-                                      <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=768"} ></iframe>                                                                         
+                                      <iframe frameBorder="0" type="text/html" width="100%" height="400px" src={"https://steelheart.tk/file-uploader/index.php?key=SIAP&id=Convenio" + data.id} ></iframe>                                                                         
                                 </Grid>                                                       
                               </Grid>
                       

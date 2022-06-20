@@ -95,6 +95,8 @@ export async function updateInternship(newInternship) {
 
         let internship = await response.json(); 
 
+        console.log(internship);
+
         return internship;
 
     }catch(err){

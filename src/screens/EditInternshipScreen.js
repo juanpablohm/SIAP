@@ -17,11 +17,10 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
 import DownloadForOfflineRoundedIcon from '@mui/icons-material/DownloadForOfflineRounded';
 import {v4 as uuidv4} from "uuid";
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
-import { getSupervisorById } from '../api/supervisor/SupervisorServices';
+import { getSupervisorById, updateSupervisor } from '../api/supervisor/SupervisorServices';
 import { getInternshipById, updateInternshipStatus, updateInternship } from '../api/internship/InternshipServices';
-
+import LinkSupervisorGenerator from '../components/LinkSupervisorGenerator';
 
 const  EditInternshipScreen = (props) =>{
 
@@ -48,18 +47,9 @@ const  EditInternshipScreen = (props) =>{
         getSupervisorData(internshipResponse.supervisorId);
 
         let listGoal = [];
-        let generalGoal = internshipResponse.generalGoal.split(";");
-        let specificGoals = internshipResponse.specificGoals.split(";");
-
-
-        generalGoal.forEach((goal) => {
-          if(goal != '')
-           listGoal.push({ description  : goal , id: uuidv4() }) 
-        });
-           
-        internshipResponse.generalGoal = listGoal;
-        listGoal = [];
-        
+       
+        let specificGoals = internshipResponse.specificGoals.split(";");    
+                
         specificGoals.forEach((goal) => { 
           if(goal != '')
             listGoal.push({ description  : goal , id: uuidv4() }) 
@@ -68,14 +58,23 @@ const  EditInternshipScreen = (props) =>{
         internshipResponse.specificGoals = listGoal;
 
         InternshipFormModel.payment = internshipResponse.payment;
-        InternshipFormModel.reports = internshipResponse.reports;
-        InternshipFormModel.products = internshipResponse.products;
+
+        if(internshipResponse.payment.fees.length <= 0)
+          InternshipFormModel.payment.fees = Payment.fees;
+
+        if(internshipResponse.reports.length >= 1)
+          InternshipFormModel.reports = internshipResponse.reports;
+
+        if(internshipResponse.products.length >= 1)
+          InternshipFormModel.products = internshipResponse.products;
        
         delete  internshipResponse['payment'];
         delete  internshipResponse['reports'];
         delete  internshipResponse['products'];
 
         InternshipFormModel.internship = internshipResponse;
+
+        console.log(InternshipFormModel)
         
         setInternship(InternshipFormModel);    
       }catch(e){
@@ -111,19 +110,16 @@ const  EditInternshipScreen = (props) =>{
       try {
         const dataSend = JSON.parse(JSON.stringify(data));
 
-        console.log(dataSend);
+        //console.log(dataSend);
 
-        let generalGoal = "";
         let specificGoals = "";     
-
-        dataSend.internship.generalGoal.map((obj) => (generalGoal += obj.description + ";" ));
+    
         dataSend.internship.specificGoals.map((obj) => (specificGoals += obj.description + ";" ));
-        dataSend.internship.generalGoal = generalGoal;
         dataSend.internship.specificGoals = specificGoals;
        
-        dataSend.reports.map((obj) => (delete obj['id']));
-        dataSend.products.map((obj) => (delete obj['id']));
-        dataSend.payment.fees.map((obj) => (delete obj['id']));
+        dataSend.reports.map((obj) => ( typeof obj.id !== 'number' ? obj['id'] = 0 : null ));
+        dataSend.products.map((obj) => (typeof obj.id !== 'number' ? obj['id'] = 0 : null));
+        dataSend.payment.fees.map((obj) => (typeof obj.id !== 'number' ? obj['id']=0: null));
 
         let supervisor = dataSend.supervisor;
         delete dataSend['supervisor'];
@@ -133,15 +129,16 @@ const  EditInternshipScreen = (props) =>{
 
         newInternship = { ...dataSend, ...newInternship }; 
 
-        console.log(newInternship);
+        console.log("Esto eslo que envia")
+        console.log(JSON.stringify(newInternship, null, 2));
 
-       /*  let responseSupervisor = await createSupervisor(supervisor);  
+        let responseSupervisor = await updateSupervisor(supervisor);  
 
-        if(responseSupervisor != null){ */
-       /*  newInternship.supervisorId = responseSupervisor.id; */
-        /* let responseInternship = await updateInternship(newInternship);   */
-        setOpenConfirm(true);
-       /*  }  */ 
+        if(responseSupervisor != null){ 
+          newInternship.supervisorId = responseSupervisor.id; 
+          let responseInternship = await updateInternship(newInternship);   
+          setOpenConfirm(true);
+        }  
       }catch(e){
           console.log(e);
           setError(true);
@@ -215,7 +212,7 @@ const  EditInternshipScreen = (props) =>{
                     aria-label="vertical outlined button group"
                 >
                     
-                    <DialogSelect handleSumit={handleChangeStatus} /> 
+                    <DialogSelect handleSumit={handleChangeStatus} type={internship.internship.type} /> 
                 
 
                     <Tooltip title="Comentar practica">
@@ -228,8 +225,8 @@ const  EditInternshipScreen = (props) =>{
                       </a>
                     </Tooltip>
 
-                    <IconButton aria-label="delete" > <DownloadForOfflineRoundedIcon  fontSize="large" color='primary'/> </IconButton>
-                    
+                    <LinkSupervisorGenerator idLink={id}></LinkSupervisorGenerator>
+
                 </ButtonGroup>
               </Grid>
  

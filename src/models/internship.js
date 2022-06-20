@@ -17,12 +17,7 @@ export var Internship = {
     type: 0,
     status: 0,
     observations: '',
-    generalGoal: [
-           {
-             description  : "",
-             id: uuidv4(),
-           },
-         ],
+    generalGoal:"",
     specificGoals: [
            {
              description  : "",

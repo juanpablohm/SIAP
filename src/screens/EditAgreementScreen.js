@@ -18,7 +18,7 @@ const EditAgreementScreen=(props) =>{
     let { id } = useParams(); 
 
     const handleOk = (tipo) => {
-        navigate('/convenios');
+        setOpenConfirm(false);  
     };
 
     const getAgreement = async () => { 
@@ -60,7 +60,7 @@ const EditAgreementScreen=(props) =>{
 
     const getDialogConfirmation = (error) => {
 
-        let texto = "Se ha actualizado el practicante exitosamente!";
+        let texto = "Se ha actualizado el convenio exitosamente!";
         let tipo = "success"
 
         if(error){

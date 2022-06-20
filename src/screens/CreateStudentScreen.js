@@ -43,20 +43,22 @@ const CreateStudentScreen=(props) =>{
        try {
             const dataSend = JSON.parse(JSON.stringify(data));
    
-            console.log(dataSend);
+            
 
             if(dataSend.universityId != 2){
-                dataSend.type = 1;
+                dataSend.type = "1";
             }else{
-                dataSend.type = 0;
+                dataSend.type = "0";
             }
+
+            console.log(dataSend);
 
             let responseStudent = await createStudent(dataSend);  
 
             if(responseStudent.ok){
                 setError({on: false, message:""});
                 setOpenConfirm(true);
-            }
+            } 
 
         }catch(e){
             console.log(e)

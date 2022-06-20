@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Alert, Button, ButtonGroup, CircularProgress, IconButton } from "@mui/material";
+import { Alert, Button, ButtonGroup, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { Grid, Box} from "@mui/material";
 import { Link, Navigate, useNavigate} from "react-router-dom";
 import { Card, CardContent, Typography } from "@mui/material";
@@ -19,6 +19,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PlagiarismRoundedIcon from '@mui/icons-material/PlagiarismRounded';
 import { deleteStudentById, getStudents } from "../api/student/StudentService";
 import { enumEPS } from '../models/student';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 const StudentScreen = () => {
@@ -67,6 +68,10 @@ const StudentScreen = () => {
         navigate('/practicantes/editar/' + id);
     }
 
+    const handledNew = (id) => {
+      navigate('/practicas/convenio/' + id);
+  }
+
 
     const handledRemove = async (id) => {
        console.log("borrar" + id);
@@ -89,7 +94,7 @@ const StudentScreen = () => {
         <Typography 
            align="center"
            sx={{ margin: '40px 16px', color: 'rgba(0, 0, 0, 0.6)', fontSize: '1.3rem'}}>
-            No se ha encontrado ningún estudiante
+            No se ha encontrado ningún practicante
         </Typography>)
     }
 
@@ -169,6 +174,9 @@ const StudentScreen = () => {
                                     <TableCell align="center">{enumEPS(student.eps)}</TableCell>
                                     <TableCell align="center">
                                       <ButtonGroup disableElevation variant="contained" aria-label="outlined primary button group">
+                                          <Tooltip title="Agregar vinculación practica">
+                                            <IconButton onClick={() => {handledNew(student.id)}}  aria-label="new" size="small" color="default"> <AddCircleIcon /> </IconButton>
+                                          </Tooltip> 
                                           <IconButton onClick={() => {handledEdit(student.id)}}  aria-label="delete" size="small" color="default"> <EditRoundedIcon /> </IconButton>
                                           <IconButton onClick={() => {handledRemove(student.id)}} aria-label="delete"  size="small" color="default"> <DeleteIcon /> </IconButton>                        
                                       </ButtonGroup>
