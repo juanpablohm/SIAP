@@ -36,6 +36,22 @@ export function getUniversity() {
       {
         value: '1',
         label: 'Universidad de Manizales',
+      },
+      {
+        value: '3',
+        label: 'Universidad Catolica',
+      },
+      {
+        value: '4',
+        label: 'Universidad Nacional',
+      },
+      {
+        value: '5',
+        label: 'Universidad del Valle',
+      },
+      {
+        value: '6',
+        label: 'Universidad EAN',
       }
     ];
 

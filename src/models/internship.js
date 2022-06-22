@@ -12,7 +12,7 @@ export var Internship = {
     endDate:  (new Date()).toISOString(),
     entryTime: null,
     exitTime: null,
-    weeksHour: 0,
+    weeksHour: 30,
     isPaid: true,
     type: 0,
     status: 0,

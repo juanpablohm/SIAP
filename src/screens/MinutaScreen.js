@@ -14,14 +14,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import MinutaForm from '../components/MinutaForm';
-import SetStateDialog from '../components/SetStateDialog';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import DownloadForOfflineRoundedIcon from '@mui/icons-material/DownloadForOfflineRounded';
 import { Minuta } from '../models/minuta';
-import { getInternshipById } from '../api/internship/InternshipServices';
+import { getInternshipById, updateInternshipStatus } from '../api/internship/InternshipServices';
 import { getStudentById } from '../api/student/StudentService';
 import { getMinutaById, updateMinuta } from '../api/minuta/MinutaServices';
 import {v4 as uuidv4} from "uuid";
+import DialogSelect from '../components/SetStateDialog';
 
 
 const  MinutaScreen=(props) =>{
@@ -149,6 +149,15 @@ const  MinutaScreen=(props) =>{
         );
     }
 
+    const handleChangeStatus = async (status) => {
+        console.log("Paso al estado" + status);
+        try {
+          let updateStatusResponse = await updateInternshipStatus(internship.id, status);
+        }catch(e){
+           console.log(e);
+        }
+    };
+
     if(error){
         return ( 
           <Grid item sx={{mt:20, mx:"auto"}} xs={10} md={4} lg={4}> 
@@ -190,7 +199,7 @@ const  MinutaScreen=(props) =>{
                 orientation="vertical"
                 aria-label="vertical outlined button group"
             >
-                <SetStateDialog /> 
+                <DialogSelect handleSumit={handleChangeStatus} type={internship.type} /> 
 
                 <Tooltip title="Comentar minuta">
                     <IconButton aria-label="delete" > <RateReviewIcon  fontSize="large" color='primary'/> </IconButton>
