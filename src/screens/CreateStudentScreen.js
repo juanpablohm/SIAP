@@ -41,9 +41,7 @@ const CreateStudentScreen=(props) =>{
     const handledSumit = async (data) =>{
  
        try {
-            const dataSend = JSON.parse(JSON.stringify(data));
-   
-            
+            const dataSend = JSON.parse(JSON.stringify(data));     
 
             if(dataSend.universityId != 2){
                 dataSend.type = "1";

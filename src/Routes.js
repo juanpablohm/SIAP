@@ -21,6 +21,7 @@ import CreateCompanyScreen from "./screens/CreateCompanyScreen";
 import EditCompanyScreen from "./screens/EditCompanyScreen";
 import EditAgreementScreen from "./screens/EditAgreementScreen";
 import SupervisorEvaluationScreen from "./screens/SupervisorEvaluationScreen";
+import ReportScreen from "./screens/ReportScreen";
 
 const MainRoutes = () => (
 
@@ -47,6 +48,7 @@ const MainRoutes = () => (
 				<Route path="docentes" element={<ProfessorScreen />} /> 
 				<Route path="docentes/nuevo" element={<CreateProfessorScreen />} /> 
 				<Route path="docente/editar/:id" element={<EditProfessorScreen />} /> 
+				<Route path="reportes" element={<ReportScreen />} /> 
 			</Route>
 
 			<Route path="supervisor/evaluacion/:id" element={<SupervisorEvaluationScreen />} /> 

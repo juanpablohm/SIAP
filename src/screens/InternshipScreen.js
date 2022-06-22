@@ -43,12 +43,11 @@ const Internships = [{
 }];
 
 const isEvaluation = (status, type) =>{
-  /* if(type === 1){
+  if(type === 1){
     if(status >= 6)
         return true;
   }
-  return false; */
-  return true;
+  return false; 
 };
 
 const isMinuta = (status, type, minutaId) => {
@@ -103,7 +102,7 @@ const getIconState = (status, type) =>{
          state.color = "success";
          break;
 
-      case 5:
+      case 6:
           state.label = "Terminada";
           state.color = "error";
           break;

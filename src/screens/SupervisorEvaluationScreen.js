@@ -56,8 +56,6 @@ const  SupervisorEvaluationScreen=(props) =>{
 
           evaluation.supervisorResponses = responsesModel;
 
-          console.log(evaluation)
-
           setQuestions(questionsResponse);    
         }catch(e){
            setError(true);
@@ -84,8 +82,7 @@ const  SupervisorEvaluationScreen=(props) =>{
 
             let responseEvaluation = await createEvaluationSupervisor(dataSend);  
 
-            console.log(responseEvaluation);
-
+            
             if(responseEvaluation.ok){
                 setOpenConfirm(true);  
             }else{
@@ -110,7 +107,7 @@ const  SupervisorEvaluationScreen=(props) =>{
 
           let responseEvaluation = await updateEvaluationSupervisor(dataSend);  
 
-          console.log(responseEvaluation);
+       
 
           if(responseEvaluation != null){
               setOpenConfirm(true);  

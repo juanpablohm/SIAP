@@ -394,6 +394,7 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                                   <Typography sx={{mt:1, textAlign:'center', fontSize: 15 }} color="text.secondary" >
                                       Es remunerada <Checkbox 
                                                     name='isPaid'
+                                                    checked={data.internship.isPaid}
                                                     value={data.internship.isPaid} 
                                                     onChange={(event) => setData({ ...data, internship:{ ...data.internship, isPaid: event.target.checked }})}
                                                     defaultChecked />
@@ -536,7 +537,25 @@ const InternshipForm=({InternshipFormModel, onSumitFunc, labelBtn, studentId, ad
                           <Typography>Información financiera</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Grid container spacing={4}>                                                                    
+                            <Grid container spacing={4}>  
+
+                                <Grid item xs={12} md={12} lg={12} >
+                                    <TextField 
+                                      name="salary" 
+                                      label="Pago total"
+                                      value={data.payment.total}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                              <Tooltip  sx={{m:0, p:0, float: 'right'}} title={"Este campo hace referencia al monto de dinero total que recibirá el practicante como pago por su practica"}>
+                                                <HelpOutlineRoundedIcon />
+                                              </Tooltip> 
+                                          </InputAdornment>
+                                        ),
+                                      }}
+                                      onChange={(event) => setData({ ...data, payment:{ ...data.payment, total: event.target.value }})}  
+                                      fullWidth/>
+                                </Grid>                                                                  
 
                                 <Grid item xs={12} md={12} lg={12} >               
                                   <DinamicInput 

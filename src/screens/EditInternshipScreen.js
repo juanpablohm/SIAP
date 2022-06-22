@@ -225,7 +225,9 @@ const  EditInternshipScreen = (props) =>{
                       </a>
                     </Tooltip>
 
-                    <LinkSupervisorGenerator idLink={id}></LinkSupervisorGenerator>
+                    {(internship.internship.type === 1 && internship.internship.status >= 6) && (
+                      <LinkSupervisorGenerator idLink={id}></LinkSupervisorGenerator>
+                    )}
 
                 </ButtonGroup>
               </Grid>

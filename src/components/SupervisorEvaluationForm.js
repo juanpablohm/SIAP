@@ -18,6 +18,8 @@ const SupervisorEvaluationForm=({ evaluationForm, questionsSupervisor, onSumitFu
         onSumitFunc(data);
   }
 
+  console.log(data)
+
   const handleChangeInputs = (id, newValue) => {
 		const index =  data.supervisorResponses.findIndex((m) => m.supervisorQuestionId === id)
     data.supervisorResponses[index]['grade'] = newValue;
@@ -101,8 +103,8 @@ const SupervisorEvaluationForm=({ evaluationForm, questionsSupervisor, onSumitFu
                           <Grid item xs={12} md={12} lg={12} >
                                   <Typography sx={{mt:1, textAlign:'center', fontSize: 15 }} color="text.secondary" >
                                       Volvería a trabajar con el estudiante en un futuro <Checkbox 
-                                                    name='isPaid'
-                                                    value={data.willWork} 
+                                                    name='willWork'
+                                                    checked={data.willWork} 
                                                     onChange={(event) => setData({...data, willWork: event.target.checked})}
                                                      />
                                    </Typography>          
